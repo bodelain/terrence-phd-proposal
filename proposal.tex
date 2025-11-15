@@ -1,0 +1,600 @@
+% === file: main.tex ===
+% LaTeX project template for:
+% "VARIABLE SELECTION FOR CLUSTER ANALYSIS WITH APPLICATION TO DHS DATA"
+% TeX Live 2020, pdflatex + BibTeX (default)
+
+\documentclass[12pt,a4paper]{report}
+
+% ------------------ Encoding & language ------------------
+\usepackage[utf8]{inputenc} % for TeX Live 2020 (pdflatex)
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+% ------------------ Page layout ------------------
+\usepackage{geometry}
+\geometry{left=30mm,right=25mm,top=30mm,bottom=30mm}
+\usepackage{setspace}
+\onehalfspacing % change to \doublespacing if your institution requires it
+
+% ------------------ Graphics & logo ------------------
+\usepackage{graphicx}
+\graphicspath{{images/}} % place logo.png inside ./images/
+\usepackage{float}
+\newcommand{\universitylogo}{images/logo.png}
+
+% ------------------ Math ------------------
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{bm} % bold math
+
+% ------------------ Tables & figures ------------------
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{subcaption}
+
+% ------------------ Algorithms, code & listings ------------------
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true}
+
+% ------------------ Plotting & diagrams ------------------
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+
+% ------------------ Citations & bibliography (APA style, BibTeX) ------------------
+%Import the natbib package and sets a bibliography  and citation styles
+\usepackage{natbib}
+\bibliographystyle{abbrvnat}
+\setcitestyle{authoryear,open={(},close={)}} %Citation-related commands
+
+
+% ------------------ Hyperlinks ------------------
+\usepackage[colorlinks=true,linkcolor=black,citecolor=blue,urlcolor=blue]{hyperref}
+
+% ------------------ Utilities ------------------
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{authblk} % for author/affiliation blocks if desired
+
+\usepackage[intoc]{nomencl} % For list of symbols
+\makenomenclature
+
+
+% ------------------ Title page setup ------------------
+\begin{document}
+	
+	% ---------- COVER PAGE ----------
+	\begin{titlepage}
+		\begin{center}
+			
+			\textbf{\hspace{35pt}THE UNIVERSITY OF NIGERIA}
+			\begin{minipage}{1.1\textwidth}
+				
+				\begin{center}
+					\begin{tabular}{lcr}\\
+						
+						\begin{minipage}{7cm}
+							\vspace{.2cm}
+							\begin{center}
+								\textbf{POSTGRADUATE PROGRAMME}
+								
+							\end{center}
+						\end{minipage}
+						&
+						\begin{minipage}{.15\textwidth}
+							\hspace*{-0.35cm}\includegraphics[scale=0.5]{logo}
+						\end{minipage}
+						&
+						\begin{minipage}{7cm}
+							\vspace{.2cm}
+							\begin{center}
+								
+								\textbf{DEPARTMENT OF
+									STATISTICS}
+								\vspace{.001cm}\\
+							\end{center}
+						\end{minipage}
+					\end{tabular}
+				\end{center}
+			\end{minipage}\\		
+			\vspace{.4cm}
+			\fbox{\begin{minipage}{15cm}\begin{center}\vspace{0.7cm}
+						\textbf{\textrm{SELECTION OF VARIABLES FOR CLUSTER ANALYSIS WITH APPLICATION TO DHS DATA IN CAMEROON }}\vspace{0.5cm}	\end{center}\end{minipage}}
+			
+			
+			\vspace{0.4cm}
+			\textit{A Proposal submitted to the Department of statistics in partial fulfillment of the requirements for the award of a PhD in Applied Statistics. }\\
+			
+			\vspace{1.5cm}
+			
+			\noindent
+			\begin{minipage}[t]{1.0\textwidth}
+				
+				\begin{center}
+					\large
+					\emph{By}\\
+					\textsc{\bfseries AYENDOH TERRENCE SAMA} \\Reg. No. {PG/PHD/23/97892} \\\text{(M.Sc. in Probability and Statistics)}
+				\end{center}
+			\end{minipage}
+			
+			\vspace{3cm}
+			
+			\begin{center}
+				
+				\emph{SUPERVISOR} \hfill \emph{CO-SUPERVISOR} \\
+				{\bfseries Dr. M S Madukaife} \hfill
+				{\bfseries Dr. E O Ossai} 							
+			\end{center}
+			
+			
+		\end{center} 
+		\vfill
+		\begin{center}
+			\textbf{Febuary, 2025}
+		\end{center}
+		
+	\end{titlepage}
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\newpage		
+	%\addcontentsline{toc}{chapter}{COPYRIGHT}
+	\thispagestyle{empty}
+	\null\vfill
+	\begin{center}
+		
+		$\copyright$ Copyright by \textbf{Ayendoh Terrence Sama} 2025
+		\\\vspace{0.3cm}
+		All Rights Reserved.
+	\end{center}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	
+	
+	% ---------- ABSTRACT ----------
+	\begin{abstract}
+		In this thesis we introduce two procedures for variable selection
+		in cluster analysis and classification rules. One is mainly oriented to
+		detect the “noisy” non–informative variables, while the other deals
+		also with multicolinearity. A forward–backward algorithm is also proposed to make feasible these procedures in large data sets. A small
+		simulation is performed and some real data examples are analyzed.\\
+\\
+		\textbf{Keywords:} Cluster Analysis, Selection of variables, Forward-backward
+		algorithm.
+	\end{abstract}
+	
+	
+	\newpage
+	\tableofcontents
+	\listoffigures
+	\listoftables
+	\newpage
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\chapter*{List of Symbols}
+	\addcontentsline{toc}{chapter}{List of Symbols}
+	\begin{tabular}{lp{15cm}}
+		$X = (X_1,\dots,X_p)$ & Random vector of $p$ variables \\
+		$p$ & Total number of variables \\
+		$n$ & Sample size (number of observations) \\
+		$K$ & Number of clusters \\
+		$f:\mathbb{R}^p \to \{1,\dots,K\}$ & Population partition function (cluster allocation rule) \\
+		$G_k$ & $k$-th cluster region: $G_k = f^{-1}(k)$ \\
+		$I \subset \{1,\dots,p\}$ & Index set of selected variables \\
+		$d$ & Cardinality of the selected subset $I$ ($d < p$) \\
+		$Y^I$ & “Blinded” vector: $Y^I_i = X_i$ if $i \in I$, else $E(X_i)$ \\
+		$Z^I$ & Conditional “blinded” vector: $Z^I_i = X_i$ if $i \in I$, else $E(X_i \mid X_I)$ \\
+		$h(I)$ & Population objective function: fraction of points with unchanged cluster labels when using $I$ \\
+		$h_n(I)$ & Empirical version of $h(I)$ computed from data \\
+		$X^*_j$ & Observation $j$ with blinded variables replaced \\
+		$\bar{X}[i]$ & Sample mean of variable $i$ \\
+		$m_n$ & Size of smallest cluster in a sample \\
+		$r$ & Number of nearest neighbors in conditional mean estimation \\
+		$\partial G_k$ & Boundary of cluster region $G_k$ \\
+		$d(x, A)$ & Distance from point $x$ to set $A$ \\
+		$\mathbb{I}\{\cdot\}$ & Indicator function \\
+		$\mathbb{P}(\cdot)$ & Probability measure \\
+		$\mathbb{E}(\cdot)$ & Expectation operator \\
+	\end{tabular}
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\chapter*{List of Abbreviations }
+	
+	\begin{tabular}{lp{15cm}}
+				
+		A.M.S. & American Mathematical Society \\
+		ANOVA & Analysis of Variance \\
+		BIC & Bayesian Information Criterion \\
+		CART & Classification and Regression Trees \\
+		GKE & General Knowledge Exam \\
+		i.i.d. & Independent and Identically Distributed \\
+		k-NN & $k$-Nearest Neighbors \\
+		MCMC & Markov Chain Monte Carlo \\
+		NN & Nearest Neighbor(s) \\
+		PCA & Principal Component Analysis \\
+		SEL & Socioeconomic Level \\
+		TSV05 & Simulated data example from Tadesse, Sha, \& Vannucci (2005) \\
+	\end{tabular}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	
+	
+	% ------------------ MAIN SECTIONS ------------------
+	\chapter{Introduction}
+	\label{ch:intro}
+	%---------------------Background------------------------
+	\section{Background}
+	
+	Recent technological developments in big data have made it fairly easy	to collect data with high volume, velocity, variety, veracity, value, and variability. Thus these datasets contain a large number of variables within a single study, "large" used here subjectively. Examples of studies on these datasets include:- examinations of genetic influences in organizational psychology
+	(e.g., \citealp{chi2016can}; \citealp{arvey2016genetics}),
+	personality psychology (e.g., \citealp{davis2019oxytocin})
+	and social psychology (e.g., \citealp{feldman2016oxytocin});
+	studies on neuroscientific foundations of behaviors in management
+	(e.g., \citealp{waldman2019added}) and psychiatry research
+	(e.g., \citealp{sun2009elucidating}); research aiming to predict personality
+	from social media footprints (e.g., \citealp{park2015automatic}); questionnaire-based studies that
+	simply collected a comprehensive set of variables (e.g., \citealp{joel2017romantic}); as well as a combination of all these types of
+	data (e.g., \citealp{bzdok2018machine}).
+	A noteworthy advantage of high-dimensional datasets is that they provide a detailed and comprehensive view.
+	Here, the definition of “many variables” is rather subjective
+	and depends largely on the field of application. In behavioral
+	sciences, one can think of data sets with more than 100 variables \citep{groeneveld2016can}. These types of data
+	sets become increasingly common due to the fact that novel
+	types of data sources are more and more often collected.
+	Thus “high-dimensional” datasets are a special case where the number of variables exceeds the number of
+	observations, i.e. $n>p$. 
+	When datasets are high-dimensional, they often contain variables that are either irrelevant, redundant, or contaminated with noise. These non-informative features can mask the true cluster structure, degrade the quality of partitions, and make interpretation difficult.
+	
+	In the context of cluster analysis – where the	intent is to group observations in such a way that those in the
+	same subgroup are similar to each other, using high-dimensional data will likely result in a more accurate estimation	of subgroups and (or) a discovery of novel subgroups. In one	of the very few reported attempts to cluster high-dimensional datasets, \citet{mothi2019machine} combined clinical measures,	Behavior Research Methods
+	laboratory measures, and measures derived from MRI scans
+	of psychotic patients to form a combined data set, on which
+	they conducted a cluster analysis and identified three subtypes of psychoses. Evidently, clustering high-dimensional
+	datasets grants an opportunity to
+	clarify and deepen our understanding of the heterogeneity and
+	true underlying structure of the phenomena in question.
+	
+	
+	Although research that exploits high-dimensional datasets to identify subgroups is promising, it also comes with
+	challenges. One of the most compelling challenges, as stressed by a number of scholars
+	(e.g., \citealp{yarkoni2017choosing}; \citealp{waldherr2017big};
+	\citealp{bzdok2018machine}), is that these data sets may comprise a large amount of "irrelevant variables" \citep{fowlkes1983method}.
+	They are variables	that do not separate clusters well and therefore do not define	cluster structure. These irrelevant variables may hinder subgroup discovery by masking the cluster structure under	investigation \citep{steinley2008selection}. Therefore, a cluster analysis should effectively recover the cluster structure
+	while simultaneously filtering out irrelevant variables.
+	
+	
+	
+%	A general problem in clustering or classification is to find structures in a high dimensional variable space but with small data sets. It is common that in	many practical cases, the amount of variables (that should not be confused with the amount of information) is too high. This may be due to the presence of several “noisy” non–informative variables, and/or redundant information from strongly correlated variables that may produce multicolinearity. Then	the information contained in the data set could be extracted from a reduced subset of the original variables.
+%	
+%	A difficult task is to find out which variables are “important”, where the
+%	concept of “important” should be related to the statistical procedure we are dealing with. If we are interested in cluster analysis, we would like to find the variables that explains the groups we have found. In this way, a (small) subset of variables should “explain” as best as possible, the statistical procedure in the original space (the high dimensional space). 
+%	
+%	Dimension reduction techniques (like principal component analysis) will produce linear combinations of the variables which are difficult to interpret unless most of the coefficients of the linear combination are negligent.
+	
+	Traditional clustering methods such as hierarchical clustering, \(k\)-means, and \(k\)-medoids operate under the implicit assumption that all variables contribute equally to the definition of clusters. In reality, certain variables may carry no meaningful discriminatory power, while others may be strongly correlated with more informative ones, introducing multicollinearity. This redundancy can distort the clustering space by overemphasizing specific dimensions and inflating the apparent significance of certain patterns. The challenge, therefore, lies in identifying a subset of variables that adequately explains the cluster structure, while discarding those that add little or no value to the partition.
+	
+	Dimension reduction techniques like Principal Component Analysis (PCA) have been employed to address high dimensionality, but these approaches create linear combinations of variables that can be difficult to interpret in substantive terms. Variable selection methods, by contrast, aim to retain a subset of the original variables, preserving interpretability while improving clustering performance. 
+	
+	In this study, we propose a pair of statistical procedures specifically suited for variable selection in clustering and classification. The first method targets the identification of “noisy” non-informative variables by substituting their values with a global measure such as the marginal mean, effectively “blinding” their influence. The second method extends this concept to address multicollinearity by replacing a variable’s values with conditional expectations based on the selected subset, thereby preserving local dependency structures while removing redundant information. Both procedures are grounded in the principle that a good subset of variables is one that preserves, as closely as possible, the cluster allocations obtained using the full set of variables.
+		
+	This work is organized as follows:- We present a synthesis of the body of work done on the problem of variable selection in clustering, where we point out the most notable studies along with gaps that we intend to fill.
+	
+	We also discuss the proposed procedure for solving the problem of variable selection in clustering in the methodology section. We also present the dataset which we will use for simulation in this section.
+	Lastly, we outline the results we expect to obtain by the end of this study, in the last section.
+	
+	
+	%----------------------------------------------------------------	
+	\chapter{Statement of the Problem}
+	\label{ch:problem}
+	
+	Cluster analysis has become a cornerstone of data analysis, providing a means to uncover latent structures and natural groupings in complex datasets. Its utility spans multiple disciplines, including biology, social sciences, marketing, image processing, and bioinformatics. Yet, despite its broad applicability, the reliability and interpretability of clustering results are often compromised when the datasets under investigation contain a large number of variables, many of which may be irrelevant, redundant, or noisy. In such high-dimensional data, the inclusion of non-informative variables can obscure the underlying structure of the data, distort similarity measures, and lead to unstable or misleading clustering solutions. This problem is compounded by the well-known "curse of dimensionality", whereby distances between observations become less discriminative as dimensionality increases, causing clusters to appear less distinct and making the task of identifying meaningful partitions substantially more challenging.
+	
+	The challenge is not merely one of computational efficiency, although high dimensionality does indeed increase the computational burden of most clustering algorithms. Rather, the core of the problem lies in the fact that many variables contribute little or no meaningful information to the definition of clusters, while others may actively mislead the clustering process. In practice, different subsets of variables may hold relevance for different cluster structures within the same dataset, and methods that treat all variables equally risk diluting or entirely masking those structures. Furthermore, redundancy among variables can create implicit weighting effects, whereby certain dimensions exert disproportionate influence on the resulting clusters, not because they contain more information, but because their repeated patterns amplify their perceived importance.
+	
+	The difficulty is exacerbated by the absence of external supervision in cluster analysis. Unlike in supervised learning, where model performance can be measured against known labels, clustering typically operates without a predefined ground truth, making it far less straightforward to evaluate the role and significance of each variable. Traditional model selection criteria such as the Bayesian Information Criterion (BIC) or the Gap Statistic, while widely used for determining the optimal number of clusters, are themselves sensitive to the presence of irrelevant or redundant variables. As a result, even when advanced model-based or non-parametric clustering algorithms are applied, the inclusion of extraneous features can lead to both overestimation and underestimation of the number of clusters, as well as a degradation in the clarity of the discovered structures.
+	
+	Over the years, numerous methods have been proposed to address the problem of variable selection for clustering, ranging from forward and backward selection strategies to penalised likelihood approaches, sparse clustering frameworks, and Bayesian variable selection models. While these methods represent important progress, they remain constrained by limitations related to scalability, assumptions about data distribution, or their ability to detect locally relevant variables. There is still no universally accepted method that balances accuracy, interpretability, and computational feasibility, particularly for large and complex datasets where variable relevance may vary across subspaces of the data.
+	
+	The problem is thus twofold: first, to define in precise terms what constitutes an “informative” variable for clustering in both global and local contexts; and second, to design a robust and computationally efficient method for identifying such variables without prior knowledge of the true cluster structure. Existing methods, while valuable, are constrained by assumptions about data distribution, sensitivity to noise, and limited scalability. Moreover, most approaches fail to adequately capture locally relevant variables—those that are essential for identifying clusters in subspaces of the data but not across the dataset as a whole.
+	
+	Addressing this problem is of both theoretical and practical importance. A solution would not only improve the accuracy and stability of clustering results, but also enhance their interpretability for domain experts, reduce computational costs, and increase the reliability of decisions derived from clustered data. This thesis seeks to address this gap by developing a robust procedure for variable selection in clustering that balances accuracy, interpretability, and scalability, while also accounting for local variations in variable relevance within high-dimensional datasets.
+		
+	
+	\chapter{Aim and Objectives of the Study}
+	\label{ch:aim}
+	
+	The problem of variable selection in cluster analysis remains both practically important and methodologically challenging. This research aims to develop a procedure for variable selection for clustering of high-dimensional data like the DHS data, that achieves a balance between computational efficiency and selection accuracy. Then we empirically validate the proposed approach on real-world datasets, like the DHS dataset for Cameroon, demonstrating improvements in interpretability, robustness, and clustering performance when compared with other standard methods like k-mean and hierarchical clustering techniques.
+	This will contribute to more accurate, interpretable, and computationally feasible clustering solutions in high-dimensional data.
+	
+	\section*{Main Objective}
+	The main objective of this study is \textit{to develop a procedure which effectively and efficiently identifies and selects variables that truly contribute to the underlying cluster structure—while filtering out irrelevant or misleading features—to improve clustering accuracy, interpretability, and computational feasibility}
+	\section*{Specific Objectives}
+	\begin{enumerate}[label=\textbf{\arabic*:}]
+		\item To review existing variable selection methods for clustering and identify limitations when applied to high dimensional data.
+		\item To develop variable selection strategies suitable for mixed-type, survey-weighted DHS variables.
+		\item To evaluate proposed methods through simulation and application to one or more Cameroon DHS datasets, as well as compare it with standard clustering procedures such as k-mean and hierarchical clustering algorithms.		
+		\item To develop an implementation of the proposed method as an R package for reproducibility and ease of use.
+	\end{enumerate}
+	
+	\chapter{Significance of the Study}
+	\label{ch:significance}
+	
+	The problem of selecting relevant variables in cluster analysis is of both theoretical and practical importance in the era of high-dimensional data. As data collection technologies become more advanced and accessible, researchers in fields as diverse as genomics, finance, education, and energy analytics are confronted with datasets containing hundreds or thousands of variables. In such contexts, the presence of irrelevant, noisy, or redundant variables not only undermines the accuracy of clustering procedures but also obscures the interpretability of the resulting group structures. The ability to identify a parsimonious subset of variables that retains the essential information for clustering is therefore a crucial step toward producing reliable, interpretable, and computationally efficient results.
+	
+	The methodology to be employed in this study, offers an elegant and statistically principled approach to this challenge. By "blinding" non-informative variables using marginal or conditional means, it becomes possible to directly assess their contribution to the clustering process, without relying on arbitrary heuristics or black-box transformations. The conditional mean extension further addresses the pervasive issue of multicollinearity, allowing the procedure to disentangle redundancy from genuine variable importance. The integration of a forward–backward search algorithm ensures that these methods remain feasible and effective even in large-scale applications where exhaustive search would be computationally prohibitive.
+	
+	The significance of this research extends beyond methodological innovation. From a practical standpoint, effective variable selection enhances the interpretability of cluster solutions, enabling domain experts to link clusters to meaningful real-world constructs. In applied settings such as healthcare diagnostics, market segmentation, and educational assessment, this interpretability can inform targeted interventions, policy decisions, and strategic planning. Furthermore, by reducing dimensionality without sacrificing essential information, the proposed approach lowers computational costs, making sophisticated clustering analyses more accessible to practitioners with limited computational resources.
+	
+	From a scientific perspective, the study contributes to bridging the gap between theoretical advances in statistical methodology and their application to real-world problems. It demonstrates that rigorous, statistically consistent procedures can be adapted into tools that are both usable and insightful for practitioners across disciplines. Ultimately, the outcomes of this work have the potential to influence best practices in unsupervised learning, encouraging the adoption of variable selection as a standard step in high-dimensional clustering workflows.
+
+	
+	\chapter{Scope of the Study}
+	\label{ch:scope}
+	This study focuses on the development, adaptation, and evaluation of statistical procedures for variable selection in cluster analysis. Specifically, the research will examine two complementary approaches: the marginal mean "blinding" method, designed to detect and remove non-informative noisy variables, and the conditional mean method, aimed at addressing multicollinearity and redundancy. These methods will be integrated with a forward–backward search algorithm to ensure computational feasibility in high-dimensional contexts. The primary application domain will be on high-dimensional datasets like DHS data obtained from the National Institute of Statistics in Cameroon. This will enable the demonstration of the methods’ generality and robustness.
+
+	Simulated data will not be used in this study. Performance will be evaluated in terms of classification agreement with the full-variable clustering, reduction in dimensionality, computational cost, and interpretability of the resulting variable subsets.
+	
+	However, several limitations should be acknowledged. First, the methods under consideration depend on the initial clustering obtained from the full set of variables. If the initial clustering is poor due to inappropriate choice of clustering algorithm, distance measure, or number of clusters, the variable selection process may propagate these deficiencies. Second, while the conditional mean method addresses multicollinearity, it requires reliable estimation of conditional expectations, which in turn demands sufficiently large sample sizes; performance may deteriorate when the sample size is small relative to the number of variables. Third, the forward–backward search algorithm, though more efficient than exhaustive search, may still be computationally intensive for extremely high-dimensional data, particularly when coupled with nonparametric conditional estimation. Finally, the evaluation of variable importance in clustering inherently lacks a ground truth in unsupervised settings, meaning that conclusions must often be drawn from indirect measures such as agreement indices or stability analyses.
+	
+	Within these parameters, the study aims to provide a rigorous assessment and practical adaptation of variable selection methods for clustering, contributing both to methodological development and to the growing need for interpretable and efficient unsupervised learning in high-dimensional data analysis.
+	
+	
+	%-----------------CHAPTER: LITERATURE REVIEW--------------------------
+	\chapter{Literature Review}
+	\label{ch:lit}
+		
+	 
+	 \section{Background on Clustering and Classification}
+	 Cluster analysis (unsupervised classification) seeks to partition data into homogeneous groups:contentReference[oaicite:0]{index=0}.  Classical clustering methods include hierarchical clustering \citep{hartigan1975}, $k$-means \citep{macqueen1967}, and $k$-medoids \citep{kaufman1987}, among others:contentReference[oaicite:1]{index=1}.  Similarly, standard classification rules (supervised learning) include Fisher’s linear discriminant analysis \citep{fisher1936} and classification trees (CART) \citep{breiman1984}:contentReference[oaicite:2]{index=2}.  In many modern applications, the number of observed variables $p$ can be very large relative to sample size $n$.  A general problem in high-dimensional clustering or classification is that many variables may be \emph{irrelevant} (pure noise) or \emph{redundant} (multicollinear), so that the same cluster structure could be recovered from a smaller subset of variables:contentReference[oaicite:3]{index=3}.  Fraiman \emph{et al.} (2008) emphasize that in cluster problems “the amount of variables ... is too high” due to noisy non-informative or strongly correlated features, and the true signal can be extracted by selecting a reduced subset:contentReference[oaicite:4]{index=4}.  Thus variable selection is critical for both interpretability and clustering accuracy in high-dimensional data.
+	 
+	 \section{Variable Selection Approaches}
+	 Variable selection for clustering can be broadly categorized by how they define and find “relevant” features.  In supervised learning, feature selection has been studied extensively \citep{blum1997selection,guyon2003}.  For clustering, one must first define relevance: in a model-based (mixture) view, relevant variables are those whose distribution depends on the latent cluster label, whereas irrelevant variables are independent of the clusters and convey no clustering information:contentReference[oaicite:5]{index=5}.  Redundant variables, which are correlated with relevant ones, are conditionally uninformative given the relevant set but can still help if relevant features were absent:contentReference[oaicite:6]{index=6}. 
+	 
+	 Existing methods can be classified as {\it filter}, {\it wrapper}, or {\it embedded} approaches.  Filter methods score or filter variables before clustering (e.g.\ by variance or feature scoring) and then cluster on the selected set, whereas wrapper methods search for subsets by repeatedly applying the clustering algorithm and measuring fit \citep{blum1997selection}.  Wrapper approaches often achieve better results at the cost of higher computation \citep{blum1997selection,guyon2003}.  In fact, as a recent survey notes, “wrapper methods have recently attracted most of the attention and are the most widespread” in model-based clustering, since they tend to yield better classification and modeling accuracy:contentReference[oaicite:7]{index=7}.  For example, Blum and Langley (1997) observed that wrapper methods typically outperform simple filters:contentReference[oaicite:8]{index=8}. 
+	 
+	 Within wrappers for mixture-model clustering, methods include Bayesian variable-selection (using latent indicators and MCMC) \citep{raftery2006variable,tadesse2005bayesian}, penalization (sparse likelihood or lasso penalties) \citep{witten2010framework,maag2012penalized}, and model-selection approaches \citep{raftery2006variable}.  For instance, Raftery and Dean (2006) recast selection as a model-selection problem using BIC for Gaussian mixtures, jointly choosing variables, cluster number and model by approximate Bayes factors.  Witten and Tibshirani (2010) proposed a sparse $k$-means framework that penalizes feature weights to select relevant variables for clustering.  Fop and Murphy (2018) provide a detailed review of these model-based selection methods, noting that the goal is always to retain only the variables containing “essential clustering information” and to discard irrelevant noise:contentReference[oaicite:9]{index=9}. 
+	 
+	 \section{Fraiman \emph{et al.} (2008) Methodology}
+	 %	Fraiman \emph{et al.} (2008) introduce two novel wrapper methods specifically for partitioning procedures (both clustering and classifiers):contentReference[oaicite:10]{index=10}.  The key idea is to “blind” variables by replacing their values with uninformative estimates, and then measure how well the original partition is preserved.  Formally, let $f(\cdot)$ be the partition rule (cluster assignment) on $\mathbb{R}^p$.  For a subset of indices $I\subset\{1,\dots,p\}$, define a “blinded” data vector $Y^I$ by $Y^I_i = X_i$ if $i\in I$, and $Y^I_i=E(X_i)$ otherwise (here $E(X_i)$ is a location constant, e.g.\ the marginal mean or median).  They then define an objective function 
+	 \[
+	 h(I) \;=\; \sum_{k=1}^K P\bigl(f(X)=k,\;f(Y^I)=k\bigr),
+	 \]
+	 i.e.\ the probability that a point is assigned to the same cluster before and after blinding variables outside $I$:contentReference[oaicite:11]{index=11}.  Intuitively, $h(I)$ measures the fraction of data whose cluster label is unchanged when only features in $I$ are kept.  One seeks the subset $I$ of a given size $d$ that maximizes $h(I)$ (or equivalently minimizes the loss of classification).  In practice, given sample data, Fraiman \emph{et al.} define the analogous empirical objective $h_n(I)$ (essentially the proportion of points whose labels coincide under the reduced data) and choose the subset that maximizes it.
+	 
+	 The two procedures differ in how the variables outside $I$ are blinded.  In the \emph{marginal-mean} approach, each unused feature is set to its marginal mean (or trimmed mean, median, etc.):contentReference[oaicite:12]{index=12}.  This detects “noisy” noninformative variables: if a variable truly carries no clustering signal, setting it to a constant should not affect cluster labels, and leaving it out will not decrease $h(I)$.  In the \emph{conditional-mean} approach, variables are replaced by their conditional expectation given $X_I$.  Concretely, for each data point, the $j$th coordinate is replaced by the mean of its $r$ nearest neighbors (in $X_I$-space) among the sample (or, robustly, the local median):contentReference[oaicite:13]{index=13}.  This way the blinded variables reflect only the signal explained by the chosen subset, effectively removing redundant variation.  The conditional method is more powerful (it can handle multicollinearity) but requires larger samples and heavier computation due to nonparametric estimation:contentReference[oaicite:14]{index=14}.  
+	 
+	 Fraiman \emph{et al.} provide strong consistency results: as $n\to\infty$, the empirical maximizer $I_n$ converges to the optimal set $I_0$ for both the mean and conditional methods (under mild regularity):contentReference[oaicite:15]{index=15}.  They note that an exhaustive search over all subsets is feasible only for small $p$; for larger dimensions they propose a heuristic forward–backward algorithm.  This algorithm starts with the single variable whose removal most degrades the clustering (i.e.\ the variable with minimum $h_n$ when blinded), then iteratively adds variables that yield the largest increase in $h_n$ until a target classification efficiency is reached (forward phase), and finally attempts to remove any redundant variables one by one (backward phase).  In practice the forward-backward search often found the same optimal subsets as exhaustive search in the examples tested, but at a fraction of the computational cost:contentReference[oaicite:18]{index=18}.
+	 
+	 \section{Empirical Results (Fraiman \emph{et al.} 2008)}
+	 Fraiman \emph{et al.} illustrate their methods on both moderate and high-dimensional data.  In one example, 98 schools in Buenos Aires were clustered (by $k$-means) into 3 groups based on 15 survey items (teachers’ and headmasters’ responses).  They then applied variable selection (exhaustively, since $p=15$) and found that only 8 variables were needed to completely recover the 3 clusters ($100\%$ accuracy):contentReference[oaicite:19]{index=19}.  These variables included headmasters’ evaluations of school knowledge (V3, V4) and relationships with parents and students (V7, V8), as well as teachers’ evaluations of building conservation, didactic resources, and relationships (V11, V12, V14, V15):contentReference[oaicite:20]{index=20}.  Relaxing the accuracy to $95\%$ allowed subsets of size 6, and at $92\%$ accuracy only 4 variables sufficed (e.g. \{V4, V7, V11, V14\}).  The forward–backward algorithm recovered essentially the same variable sets as the exhaustive search in these trials, confirming its effectiveness:contentReference[oaicite:21]{index=21}:contentReference[oaicite:22]{index=22}.  The conditional-mean method yielded a similar set, often eliminating one additional redundant feature (in this case, a student-relationships item):contentReference[oaicite:23]{index=23}.
+	 
+	 In another example, they analyzed electricity consumption curves (96 time-intervals) for 101 households, clustered into 2 types (plus outliers) via a trimmed $k$-means.  Here $p=96$ is large, so they ran the forward–backward search.  Table 4 of Fraiman \emph{et al.} reports, for efficiency thresholds of 90\%, 95\%, and 100\%, the minimal number of time-intervals needed.  Using the simple mean-blanking method required 15, 22, and 33 variables respectively, whereas using the conditional-mean method (with 5-nearest neighbors) required only 4, 6, and 9 variables:contentReference[oaicite:24]{index=24}.  Thus in this high-dimensional example the conditional strategy dramatically reduced the feature set while preserving cluster accuracy.  The most informative intervals were concentrated in certain time windows (e.g. early morning and evening), consistent with the interpretation that the two consumer types differ in peak-hour usage (see Fig. 5 in Fraiman \emph{et al.}):contentReference[oaicite:25]{index=25}.
+	 
+	 \section{Comparison to Other Work}
+	 Fraiman \emph{et al.}’s approach is a model-free, geometric wrapper that focuses on preserving cluster labels.  In contrast, much of the recent literature has focused on model-based criteria or penalization.  For example, Dean and Raftery (2006) integrate variable selection into Gaussian mixtures using a BIC comparison, automatically determining the number of clusters and feature set.  Witten and Tibshirani (2010) and related sparse clustering methods use regularization (Lasso penalties) to shrink uninformative features toward zero weight during clustering.  These methods also demonstrate that removing irrelevant dimensions often improves cluster recovery (for instance, Raftery and Dean found higher clustering accuracy without noise features).  The statistical survey by Fop and Murphy (2018) reviews these methods and notes that in model-based clustering, relevant variables are those whose distribution \emph{depends} on cluster membership:contentReference[oaicite:26]{index=26} – the same idea underlying Fraiman \emph{et al.}’s criterion of label stability:contentReference[oaicite:27]{index=27}:contentReference[oaicite:28]{index=28}.
+	 
+	 Empirically, many authors have applied variable selection to real data (e.g.\ microarray gene clustering, customer segmentation, etc.).  While Fraiman \emph{et al.} focused on these two examples, other studies (e.g.\ feature selection for gene expression clustering) report similar findings: only a small subset of variables is truly needed to reveal the latent groups.  However, methods vary widely: some use filter statistics (variance, mutual information), others use wrapper criteria (e.g.\ change in $k$-means objective when omitting a variable), and still others use embedded criteria (entropy, log-likelihood).  Broadly, the consensus is that proper variable selection can greatly simplify cluster interpretation and improve performance, as also noted by Fraiman \emph{et al.} and by others:contentReference[oaicite:29]{index=29}:contentReference[oaicite:30]{index=30}. 
+	 
+	 \section{Discussion and Research Gaps}
+	 Fraiman \emph{et al.} provide a clear and consistent framework for variable selection in clustering, with solid theoretical backing (strong consistency) and practical algorithms.  They highlight the importance of distinguishing between purely noisy features and redundant ones (multicollinearity), which many simpler methods ignore.  The empirical results demonstrate substantial dimension reduction without loss of clustering accuracy. 
+	 
+	 Nonetheless, several open challenges remain.  As the authors note, their forward–backward search becomes computationally expensive as $p$ grows, suggesting the need for more scalable search heuristics or optimization techniques:contentReference[oaicite:31]{index=31}.  In ultra-high dimensions ($p\gg n$), additional regularization or screening steps may be needed.  Moreover, their approach assumes a fixed number of clusters and a fixed clustering method; in practice the cluster number may be unknown and intertwined with feature choice (as tackled by Bayesian or BIC-based methods).  Extensions to mixed data types, streaming data, and complex cluster shapes are also largely unexplored.  Finally, while Fraiman \emph{et al.} measure success by label stability, other criteria (cluster compactness, separation indices) could be considered and compared.  
+	 
+	 In summary, Fraiman \emph{et al.} (2008) make a significant contribution by formalizing “feature blinding” for cluster variable selection and proving its consistency.  Their work builds on and complements both classical ideas (e.g.\ Fowlkes \emph{et al.} (1988) who also proposed reducing variables for clustering) and modern developments (model-based and penalized methods).  Future research could address the computational limitations and integrate these ideas with automatic model selection for clustering.  Overall, this line of work remains important for uncovering interpretable structures in high-dimensional unsupervised learning problems. 
+	 
+	 
+	 
+
+	
+	\chapter{Methodology}
+	\label{ch:methodology}
+	
+	\section{Introduction}
+	
+	Variable selection for clustering and classification is intended to find the variables that simultaneously minimize the ‘within-group’ variance and maximize the ‘between-group’ variance. The combination of	these two criteria will give variables that best show separation between the desired groups. Note that the	within-group variance for each variable $j = 1, \dots, p$ can be written as
+
+
+	\[
+	W_j = \frac{{\sum_{g=1}^{G}}  \sum_{i=1}^{n} z_{ig}(x_{ij} - \mu_g j)^2}{n}
+	\]
+	where $x_{ij}$ is observation $i$ on variable $j$, $\mu_g g$ is the mean of variable $j$ in group $g$, $n$ is the number of observations, and $z_{ig}$ is a group membership indicator variable defined so that
+	\[
+	z_{ig} =
+	\begin{cases}
+		1 & \text{if observation } x_{i} = (x_{i1}, . . . , x_{ip}) \text{ belongs to cluster } g, \\
+		0 & \text{otherwise}.
+	\end{cases}
+	\]
+	The leftover variance within variable $j$ not accounted for by $W_j$, or $\sigma^2_j - W_j$ in the common notation, is then the leftover variance within groups. 
+	In general, calculation of this value will be necessary. However,
+	if the data have been standardized to have equal variance across variables, then any variable minimizing the	within-group variance is also maximizing the leftover variance.
+	
+	
+	
+	This study is based on statistical procedures for variable selection in clustering. The core idea is to identify the smallest subset of variables that preserves, as closely as possible, the clustering structure obtained when using the full set of variables. The methods rely on the concept of ``blinding''—replacing the values of certain variables so as to neutralize their influence—and on a quantitative measure of how much the resulting partition differs from the original one. This chapter describes the methods, underlying mathematical formulation, and algorithmic implementation that we will apply.
+	
+	Two complementary blinding strategies will be implemented:
+	\begin{enumerate}
+		\item \textbf{Marginal Mean Blinding} — aimed at detecting and removing non-informative noisy variables.
+		\item \textbf{Conditional Mean Blinding} — designed to detect and remove both noisy and redundant (multicollinear) variables.
+	\end{enumerate}
+	A forward–backward search algorithm will be employed to make the procedures computationally feasible for high-dimensional data.
+	
+	\section{Mathematical Notation}
+	
+	Let $\mathbf{X} = (X_1, X_2, \dots, X_p)$ be a $p$-dimensional random vector with joint distribution $P$. Let $n$ independent realizations $\mathbf{X}_1, \dots, \mathbf{X}_n \in \mathbb{R}^p$ constitute the dataset. A clustering procedure applied to the dataset produces a \emph{partition function}:
+	\[
+	f : \mathbb{R}^p \to \{1, 2, \dots, K\}
+	\]
+	assigning each observation to one of $K$ clusters. The corresponding partition of the space is denoted by $\mathcal{G}_k = f^{-1}(k)$, $k = 1, \dots, K$.
+	
+	The goal is to find a subset of variables $I \subset \{1, 2, \dots, p\}$, with $|I| = d < p$, such that the clustering assignments produced using only variables in $I$ closely match those from the full set $\{1, \dots, p\}$.
+	
+	
+	\section{Blinding Procedures}
+	
+	To evaluate the contribution of each variable, we consider two complementary blinding strategies:  
+	
+	\subsection*{Marginal Mean Blinding}
+	Each variable $X_j$ to be blinded is replaced by its marginal mean, effectively removing its variability. This neutralizes the influence of variables that add random noise without contributing to cluster separation.  
+	
+	\subsection*{Conditional Mean Blinding}
+	Each variable $X_j$ to be blinded is replaced by its conditional mean given the remaining variables. This removes not only noise but also redundant information arising from strong correlations or multicollinearity among variables.  
+	
+	Both procedures allow us to measure the degree to which removing a variable alters the clustering structure, thus quantifying its informativeness.  
+	
+	\section{Variable Selection Algorithm}
+	
+	An exhaustive search over all subsets of size $d$ is computationally infeasible when $p$ is large. To address this, we adopt a \emph{forward--backward search strategy}:  
+	
+	\begin{itemize}
+		\item \textbf{Forward Step:} Iteratively add variables that most improve the preservation of the original clustering.  
+		\item \textbf{Backward Step:} Remove variables that, once included, are found to be redundant or uninformative.  
+		\item \textbf{Stopping Rule:} The algorithm terminates when no further improvement can be achieved without violating a predefined efficiency threshold (e.g., proportion of preserved cluster labels).  
+	\end{itemize}
+	
+	This iterative approach ensures scalability while balancing accuracy and computational cost.  
+	
+	\section{Evaluation Method}
+	
+	The methodology will be validated through a combination of simulation studies and real-world applications.  
+	
+	\subsection{Simulation Studies}
+	Simulation experiments will be conducted under varying conditions to test robustness:  
+	\begin{itemize}
+		\item Different levels of noise variables.   
+		\item Sample size variation (small, medium, large $n$).  
+		\item Increasing dimensionality ($p$).  
+	\end{itemize}
+	
+	These experiments will allow us to evaluate the ability of the methodology to recover informative variables under controlled scenarios.  
+	
+	\subsection{Real-world Applications}
+	The framework will be applied to high-dimensional real datasets such as the \textbf{Demographic and Health Survey (DHS)} dataset containing numerous socioeconomic and demographic variables.  
+		
+	
+	\section{Performance Metrics}
+	
+	Performance will be assessed using the following criteria:  
+	\begin{itemize}
+		\item \textbf{Clustering preservation:} Proportion of labels preserved between the full-variable and reduced-variable partitions.  
+		\item \textbf{Subset size:} Number of variables retained relative to $p$.  
+		\item \textbf{Computational efficiency:} Runtime and memory usage of the algorithm.  
+		\item \textbf{Interpretability:} Practical relevance and interpretability of the selected variables for domain experts.  
+	\end{itemize}
+	
+
+	\section{Comparative Benchmarking}
+	
+	The proposed methodology will be benchmarked against the following existing approaches:  
+	\begin{itemize}  
+		\item Sparse $k$-means clustering.  
+		\item Hierarchical clustering   
+	\end{itemize}
+	
+	Statistical tests will be applied to evaluate differences in performance across methods.  
+	
+	\section{Justification of Method Choice}
+	
+	The chosen methodology offers a balance of \emph{theoretical soundness, interpretability, and scalability}.  
+	
+	\begin{itemize}
+		\item \textbf{Marginal Mean Blinding} provides a simple and computationally efficient baseline for detecting noisy variables.  
+		\item \textbf{Conditional Mean Blinding} addresses redundancy, a more challenging but critical issue in high-dimensional data.  
+		\item The \textbf{forward--backward search algorithm} ensures practical feasibility without sacrificing performance.  
+	\end{itemize}
+	
+	Together, these methods form a stable and adaptable approach to variable selection in clustering, capable of handling real-world datasets.  
+	
+	\section{Summary}
+	
+	This chapter has presented the proposed methodology for variable selection in clustering. By using blinding procedures, forward--backward search, and rigorous evaluation strategies, the research seeks to develop a framework that is accurate, interpretable, and computationally efficient.  
+	
+
+	
+	\chapter{Expected Results}
+	\label{ch:expectedresults}
+	
+	This chapter outlines the anticipated outcomes of the proposed study on variable selection for clustering. Based on the methodology described in Chapter~\ref{ch:methodology}, the research is expected to produce results that advance both the theoretical understanding and practical implementation of variable selection in high-dimensional clustering.  
+	
+	\section{Theoretical Contributions}
+	
+
+
+		\begin{itemize}
+			
+			\item A theoretical framework demonstrating how blinding techniques (marginal mean and conditional mean) capture noise and redundancy in different ways.  
+		
+			\item Development of a scalable forward--backward search algorithm for variable selection that avoids exhaustive search while retaining accuracy.  
+			\item Formal analysis of the algorithm’s computational complexity and efficiency in high-dimensional settings.  
+		\end{itemize}
+
+	
+
+	
+	From controlled simulation experiments, the proposed methodology is expected to show:  
+	
+	\begin{itemize}
+		\item \textbf{High preservation rates:} The reduced-variable clustering partitions will closely match those obtained from the full set of variables, with minimal loss of information.  
+		\item \textbf{Effective noise elimination:} Marginal mean blinding will successfully identify and remove purely random variables.  
+		\item \textbf{Redundancy handling:} Conditional mean blinding will outperform marginal blinding in detecting and eliminating highly correlated or multicollinear variables.  
+		\item \textbf{Robustness across conditions:} Performance will remain stable under varying levels of noise, correlation structures, dimensionality ($p$), and sample size ($n$).  
+	\end{itemize}
+	
+
+	
+	When applied to real datasets such as Demographic and Health Survey (DHS) data and other high-dimensional data, the methodology is expected to yield:  
+	
+	\begin{itemize}
+		\item \textbf{Smaller, interpretable subsets of variables} that are meaningful to domain experts.  
+		\item \textbf{Improved cluster stability and clarity}, leading to partitions that are more robust and interpretable.  
+		\item \textbf{Computational efficiency}, reducing runtime and memory requirements compared to full-variable clustering.  
+	\end{itemize}
+	
+	
+	Against existing approaches (e.g., sparse $k$-means, hierarchical clustering with selection, the proposed framework is expected to demonstrate:  
+	
+	\begin{itemize}
+		\item \textbf{Competitive or superior clustering accuracy}, particularly in datasets with strong redundancy or high noise.  
+		\item \textbf{Better balance between accuracy and interpretability}, due to the clear role of blinding procedures.  
+		\item \textbf{Improved scalability}, enabling application to datasets with thousands of variables.  
+	\end{itemize}
+	
+
+	
+	The anticipated findings will have broader significance:  
+	
+	\begin{itemize}
+		\item \textbf{For theory:} Establishing blinding-based selection as a principled and generalizable approach to variable selection in clustering.  
+		\item \textbf{For practice:} Providing researchers and practitioners in fields such as public health, social sciences, and bioinformatics with a reliable tool for high-dimensional data exploration.  
+		\item \textbf{For computation:} Contributing an efficient algorithm that can be adapted into software packages for widespread use.  
+	\end{itemize}
+	
+	\section{Summary}
+	
+	In summary, the proposed research is expected to deliver:  
+	\begin{itemize}
+		\item A principled framework for variable selection in clustering.  
+		\item An efficient and scalable algorithm that integrates marginal and conditional blinding.  
+		\item Demonstrated effectiveness through both simulation studies and real-world applications.  
+		\item Enhanced accuracy, interpretability, and computational feasibility compared to existing methods.  
+	\end{itemize}
+	
+	These results will lay the foundation for more reliable and interpretable clustering in high-dimensional data, advancing both the methodology and its applications.  
+	
+	
+	
+%	\chapter{References}
+	% Use BibTeX for references. See references.bib for sample entries.
+
+	\bibliography{references}
+	
+	\appendix
+%	\chapter{Appendix A: Example R code snippets}
+	% Include sample R code for weighted clustering, variable selection etc.
+	
+\end{document}
+
