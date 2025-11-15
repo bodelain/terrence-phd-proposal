@@ -370,9 +370,85 @@
 	
 	    \item \textbf{Embedded Methods:} These methods integrate the variable selection process directly into the training of the clustering model itself. This is typically achieved by adding a penalty term to the clustering objective function that penalizes model complexity. This penalty encourages sparsity by shrinking the contributions of less important variables toward zero, effectively performing variable selection and clustering simultaneously. Prominent examples include sparse $k$-means \citep{witten2010framework} and sparse mixture models. Embedded methods offer a compromise between the efficiency of filters and the performance of wrappers, as they account for variable interactions and the clustering objective in a computationally feasible manner.
 	\end{itemize}
-	This taxonomy provides a crucial framework for navigating the vast literature on variable selection and for situating the contribution of any new proposed methodology. The following sections will delve deeper into specific examples from these families, critically evaluating their strengths and weaknesses.	
+	This taxonomy provides a crucial framework for navigating the vast literature on variable selection and for situating the contribution of any new proposed methodology. The following sections will delve deeper into specific examples from these families, critically evaluating their strengths and weaknesses.
 	
+	\section{Wrapper Methods: Evaluating Subsets}
+	\label{sec:wrapper}
 	
+	Wrapper methods epitomize the principle of optimizing variable selection for a specific learning task. In the context of clustering, this means the clustering algorithm itself is used as the core component of the evaluation function to score candidate subsets of variables. The process is iterative: a search algorithm proposes a subset of variables, the clustering algorithm is run on this subset, and the quality of the resulting partition is evaluated using a predefined criterion. This score guides the search toward more promising subsets.
+	
+	The primary advantage of the wrapper approach is its directness: it assesses variable subsets based on how well they perform for the ultimate clustering objective, thereby accounting for the interaction between the feature subset and the learning algorithm. The search strategy is a critical component, as an exhaustive search of all $2^p - 1$ possible subsets is computationally intractable for even a moderate number of variables $p$. Common search heuristics include:
+	\begin{itemize}
+	    \item \textbf{Forward Selection:} Starting with an empty set, variables are iteratively added one at a time, selecting the variable that produces the greatest improvement in the clustering criterion at each step.
+	    \item \textbf{Backward Elimination:} Starting with the full set of variables, the algorithm iteratively removes the variable whose removal results in the smallest degradation (or largest improvement) of the clustering criterion.
+	    \item \textbf{Stepwise Selection:} A combination of forward and backward steps, which allows for both adding and removing variables at different stages to escape local optima.
+	\end{itemize}
+	
+	A prominent and influential example of the wrapper method in a model-based clustering context is the work of \citet{raftery2006}. They proposed a method for selecting variables in Gaussian mixture models where the goal is to find the subset of variables that leads to the best clustering, as measured by the Bayesian Information Criterion (BIC). Their algorithm performs a forward-backward (stepwise) search. At each step, it considers either adding a variable to the current subset or removing one. The change that results in the largest increase in the BIC (which balances model fit with complexity) is accepted, and the process continues until no change can improve the BIC. This approach directly links variable selection to the objective of finding a parsimonious, well-fitting statistical model of the data's cluster structure.
+	
+	While originally formulated for model-based clustering, the wrapper principle is broadly applicable. Similar strategies have been adapted for partitional algorithms like $k$-means, where the evaluation criterion is often an internal validation index (e.g., average silhouette width) or a measure of cluster stability \citep{steinley2008selection}.
+	
+	\subsection*{Critical Analysis of Wrapper Methods}
+	The main strength of wrapper methods is their potential for high performance. By tailoring the variable subset to the specific biases and assumptions of the chosen clustering algorithm, they are more likely to find a subset that yields a better-quality partition compared to filter methods.
+	
+	However, this approach has significant drawbacks. The most notable is its \textbf{high computational cost}. Because the clustering algorithm must be run for every single subset evaluated, the process can be extremely slow, especially with a large number of variables or a computationally expensive clustering algorithm. Furthermore, there is a considerable \textbf{risk of overfitting}. The method may select a variable subset that performs exceptionally well on the given data and the chosen evaluation criterion but does not generalize well to new data. The search process is also susceptible to getting trapped in \textbf{local optima}, meaning the final selected subset may be highly dependent on the starting point and the search heuristic, with no guarantee of finding the globally optimal subset. Despite these limitations, wrapper methods remain a powerful and conceptually straightforward approach to variable selection in clustering.	
+	
+\section{Embedded Methods: Integrating Selection and Clustering}
+\label{sec:embedded}
+
+In contrast to the computationally intensive nature of wrapper methods, embedded methods offer a more integrated and efficient solution by incorporating the variable selection process directly into the model-fitting procedure. This approach is particularly powerful in high-dimensional settings, as it simultaneously performs clustering and identifies the most informative variables in a single, unified framework. Embedded techniques typically achieve this by introducing a penalty term into the clustering objective function, which penalizes model complexity and encourages sparsity. This forces the contributions of irrelevant variables toward zero, effectively selecting a parsimonious set of features that best explains the cluster structure.
+
+\subsection{Penalized and Sparse Methods}
+A major class of embedded methods is based on penalization, drawing inspiration from successful techniques in supervised learning like the Lasso (Least Absolute Shrinkage and Selection Operator). These methods modify the objective function of a clustering algorithm (e.g., the within-cluster sum of squares in $k$-means or the log-likelihood in model-based clustering) by adding a penalty proportional to the size of the variable weights or contributions.
+
+A seminal work in this area is the sparse $k$-means algorithm proposed by \citet{witten2010framework}. Their method adds an $L_1$ penalty to the standard $k$-means objective function, which has the effect of making the feature weights sparse. By tuning a penalty parameter, the algorithm can select a subset of variables that contribute to the clustering, while giving a weight of exactly zero to all other variables. This results in a more interpretable clustering where groups are defined only by the selected features.
+
+In the context of model-based clustering, \citet{pan2007penalized} introduced a penalized likelihood approach for Gaussian mixture models. They added a penalty term to the log-likelihood function that penalizes the estimation of the mean parameters. By shrinking some of the mean parameters to be equal across clusters, their method effectively implies that the corresponding variables do not contribute to the separation of those clusters. This approach elegantly combines the statistical rigor of mixture models with the variable selection capabilities of penalization.
+
+\subsection{Bayesian Methods}
+An alternative and powerful embedded approach is offered by Bayesian variable selection. In this framework, the relevance of each variable is treated as a random variable to be estimated from the data. This is typically accomplished by introducing a binary latent indicator variable for each feature, where the indicator denotes whether the variable is relevant to the clustering process or not.
+
+The work of \citet{tadesse2005bayesian} provides a prominent example of this approach. They developed a Bayesian variable selection method for model-based clustering of high-dimensional data, such as gene expression profiles. Their model uses Markov Chain Monte Carlo (MCMC) methods to explore the posterior distribution of the latent indicator variables. The posterior probability of a variable's indicator being "on" provides a natural and intuitive measure of its importance for the clustering structure. This allows for a probabilistic assessment of variable relevance, which can be more nuanced than the hard-thresholding of penalized methods.
+
+\subsection*{Critical Analysis of Embedded Methods}
+Embedded methods represent a significant advance in variable selection for clustering, offering a compelling balance between statistical elegance, computational efficiency, and performance. Their primary advantage is their ability to handle high-dimensional data more effectively than wrapper methods. By integrating selection into the model, they avoid the costly iterative search over all possible subsets. The resulting models are often more parsimonious and interpretable.
+
+However, these methods are not without their challenges. The performance of penalized methods often depends on the careful tuning of one or more penalty parameters, which can be a non-trivial task. Cross-validation is often used, but it adds to the computational burden. Bayesian methods, while providing rich probabilistic output, can be computationally intensive and may require expertise to diagnose convergence and set appropriate priors. Furthermore, both penalized and Bayesian methods are based on specific model assumptions (e.g., Gaussian mixtures), and their performance may be compromised if these assumptions are violated. Despite these considerations, embedded methods are a cornerstone of modern variable selection for clustering, providing a powerful toolkit for researchers dealing with complex, high-dimensional data.
+
+\section{Gaps, Challenges, and Synthesis}
+\label{sec:gaps}
+
+The review of filter, wrapper, and embedded methods reveals a clear trade-off between computational efficiency, statistical rigor, and flexibility. Filter methods are fast and simple but are disconnected from the clustering objective, risking suboptimal variable selection. Wrapper methods directly optimize for clustering performance but at a high computational cost and with a significant risk of overfitting. Embedded methods offer an elegant and efficient compromise by integrating selection into the model-fitting process, but their performance is often tied to specific model assumptions and requires careful parameter tuning.
+
+Despite the considerable progress, several key challenges remain in the field of variable selection for clustering. A primary challenge is the development of methods that are simultaneously \textbf{statistically robust}, \textbf{computationally scalable}, and \textbf{highly interpretable}. Many existing methods excel in one or two of these areas but fall short in the third. For instance, complex Bayesian models may offer statistical robustness but can be difficult for non-experts to implement and interpret.
+
+Furthermore, most existing variable selection methods are designed for simple, continuous data and may not be directly applicable to the complex data structures found in real-world applications. A significant gap exists in methods that can handle:
+\begin{itemize}
+    \item \textbf{Mixed-type data:} Datasets containing a combination of continuous, categorical, and ordinal variables.
+    \item \textbf{Weighted data:} Survey data, like the Demographic and Health Surveys (DHS), often include sampling weights that must be incorporated to produce representative results.
+    \item \textbf{High-dimensional data with complex correlation structures:} The presence of intricate dependencies between variables can challenge many selection algorithms.
+\end{itemize}
+
+This synthesis of the literature highlights the need for a variable selection method that is not only grounded in a clear statistical principle but is also flexible enough to be adapted to the messy, complex data often encountered in applied research. The ideal method should be intuitive, provide a clear justification for its selections, and be capable of handling the specific characteristics of datasets like the DHS.
+
+\section{Justification for the Proposed Methodology}
+\label{sec:justification}
+
+The preceding analysis of the literature reveals a critical need for a variable selection methodology that is not only robust and scalable but also transparent and adaptable to complex data. The proposed research addresses this need by adopting and extending the "blinding" procedure introduced by \citet{fraiman2008}. This approach, which can be viewed as a distinct and highly intuitive type of wrapper method, is uniquely suited to overcome the limitations of existing techniques.
+
+The Fraiman et al. method is grounded in a clear and interpretable statistical principle: a variable's importance is measured by the impact its removal has on the final cluster partition. Instead of physically removing the variable, its influence is neutralized by replacing its values with a non-informative substitute. This makes the method's logic transparent and easy to communicate.
+
+Crucially, the methodology provides a neat conceptual separation for tackling the two primary challenges in variable selection:
+\begin{enumerate}
+    \item \textbf{Identifying Noise:} By replacing a variable's values with its marginal mean, we can assess whether it contributes anything more than random noise. If the clustering structure remains largely unchanged, the variable is deemed irrelevant.
+    \item \textbf{Identifying Redundancy:} By using a more sophisticated blinding—replacing a variable's values with its conditional mean given a subset of other variables—we can determine if its information is already captured by that subset. This directly addresses the problem of multicollinearity.
+\end{enumerate}
+
+A key advantage of this framework is its \textbf{flexibility}. It is not tied to a specific clustering algorithm. The blinding procedure can be paired with any clustering method, from $k$-means to hierarchical or model-based approaches. This allows the selection process to be tailored to the algorithm best suited for the data at hand.
+
+Therefore, this research frames the Fraiman et al. procedure as an ideal choice for analyzing complex survey data like the DHS. The novel contribution of this work will be to adapt, rigorously evaluate, and extend this powerful but less-commonly used method. We will develop strategies to handle the mixed-type and weighted nature of the DHS data within this framework, addressing a significant gap in the current literature. By doing so, we aim to provide a practical, robust, and interpretable solution for variable selection in a context where it is sorely needed.
+
+	\chapter{Methodology}
 	This study is based on statistical procedures for variable selection in clustering. The core idea is to identify the smallest subset of variables that preserves, as closely as possible, the clustering structure obtained when using the full set of variables. The methods rely on the concept of ``blinding''—replacing the values of certain variables so as to neutralize their influence—and on a quantitative measure of how much the resulting partition differs from the original one. This chapter describes the methods, underlying mathematical formulation, and algorithmic implementation that we will apply.
 	
 	Two complementary blinding strategies will be implemented:
