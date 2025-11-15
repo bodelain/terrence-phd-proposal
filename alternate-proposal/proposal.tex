@@ -130,7 +130,7 @@
 		\end{center} 
 		\vfill
 		\begin{center}
-			\textbf{Febuary, 2025}
+			\textbf{February, 2025}
 		\end{center}
 		
 	\end{titlepage}
@@ -154,11 +154,9 @@
 	
 	% ---------- ABSTRACT ----------
 	\begin{abstract}
-		In this thesis we introduce two procedures for variable selection
-		in cluster analysis and classification rules. One is mainly oriented to
-		detect the “noisy” non–informative variables, while the other deals
-		also with multicolinearity. A forward–backward algorithm is also proposed to make feasible these procedures in large data sets. A small
-		simulation is performed and some real data examples are analyzed.\\
+		In this thesis we will introduce two procedures for variable selection
+		in cluster analysis and classification rules. One will mainly be oriented to	detect the “noisy” non–informative variables, while the other will deal with multicolinearity. A forward–backward algorithm will be proposed as well to make feasible these procedures in large data sets. A small
+		simulation will be performed and some real data examples are analyzed.\\
 \\
 		\textbf{Keywords:} Cluster Analysis, Selection of variables, Forward-backward
 		algorithm.
@@ -201,7 +199,7 @@
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\chapter*{List of Abbreviations }
-	
+	\addcontentsline{toc}{chapter}{List of Symbols}	
 	\begin{tabular}{lp{15cm}}
 				
 		A.M.S. & American Mathematical Society \\
@@ -244,8 +242,7 @@
 	sciences, one can think of data sets with more than 100 variables \citep{groeneveld2016can}. These types of data
 	sets become increasingly common due to the fact that novel
 	types of data sources are more and more often collected.
-	Thus “high-dimensional” datasets are a special case where the number of variables exceeds the number of
-	observations, i.e. $n>p$. 
+	Thus “high-dimensional” datasets are a case where number of variables (p) exceeds the number of observations (n), i.e. $p>n$. 
 	When datasets are high-dimensional, they often contain variables that are either irrelevant, redundant, or contaminated with noise. These non-informative features can mask the true cluster structure, degrade the quality of partitions, and make interpretation difficult.
 	
 	In the context of cluster analysis – where the	intent is to group observations in such a way that those in the
@@ -300,13 +297,13 @@
 	
 	The problem is thus twofold: first, to define in precise terms what constitutes an “informative” variable for clustering in both global and local contexts; and second, to design a robust and computationally efficient method for identifying such variables without prior knowledge of the true cluster structure. Existing methods, while valuable, are constrained by assumptions about data distribution, sensitivity to noise, and limited scalability. Moreover, most approaches fail to adequately capture locally relevant variables—those that are essential for identifying clusters in subspaces of the data but not across the dataset as a whole.
 	
-	Addressing this problem is of both theoretical and practical importance. A solution would not only improve the accuracy and stability of clustering results, but also enhance their interpretability for domain experts, reduce computational costs, and increase the reliability of decisions derived from clustered data. This thesis seeks to address this gap by developing a robust procedure for variable selection in clustering that balances accuracy, interpretability, and scalability, while also accounting for local variations in variable relevance within high-dimensional datasets.
+	Addressing this problem is of both theoretical and practical importance. A solution would not only improve the accuracy and stability of clustering results, but also enhance their interpretability for domain experts, reduce computational costs, and increase the reliability of decisions derived from clustered data. This study seeks to address this gap by developing a robust procedure for variable selection in clustering that balances accuracy, interpretability, and scalability, while also accounting for local variations in variable relevance within high-dimensional datasets.
 		
 	
 	\chapter{Aim and Objectives of the Study}
 	\label{ch:aim}
 	
-	The problem of variable selection in cluster analysis remains both practically important and methodologically challenging. This research aims to develop a procedure for variable selection for clustering of high-dimensional data like the DHS data, that achieves a balance between computational efficiency and selection accuracy. Then we empirically validate the proposed approach on real-world datasets, like the DHS dataset for Cameroon, demonstrating improvements in interpretability, robustness, and clustering performance when compared with other standard methods like k-mean and hierarchical clustering techniques.
+	The problem of variable selection in cluster analysis remains both practically important and methodologically challenging. This research aims to develop a procedure for variable selection for clustering of high-dimensional data like the DHS data, that achieves a balance between computational efficiency and selection accuracy. Then we empirically validate the proposed approach on real-world datasets, like the DHS dataset for Cameroon, demonstrating improvements in interpretability, robustness, and clustering performance when compared with other standard methods like k-means and hierarchical clustering techniques.
 	This will contribute to more accurate, interpretable, and computationally feasible clustering solutions in high-dimensional data.
 	
 	\section*{Main Objective}
@@ -315,7 +312,7 @@
 	\begin{enumerate}[label=\textbf{\arabic*:}]
 		\item To review existing variable selection methods for clustering and identify limitations when applied to high dimensional data.
 		\item To develop variable selection strategies suitable for mixed-type, survey-weighted DHS variables.
-		\item To evaluate proposed methods through simulation and application to one or more Cameroon DHS datasets, as well as compare it with standard clustering procedures such as k-mean and hierarchical clustering algorithms.		
+		\item To evaluate proposed methods through simulation and application to one or more Cameroon DHS datasets, as well as compare it with standard clustering procedures such as k-means and hierarchical clustering algorithms.		
 		\item To develop an implementation of the proposed method as an R package for reproducibility and ease of use.
 	\end{enumerate}
 	
@@ -324,7 +321,7 @@
 	
 	The problem of selecting relevant variables in cluster analysis is of both theoretical and practical importance in the era of high-dimensional data. As data collection technologies become more advanced and accessible, researchers in fields as diverse as genomics, finance, education, and energy analytics are confronted with datasets containing hundreds or thousands of variables. In such contexts, the presence of irrelevant, noisy, or redundant variables not only undermines the accuracy of clustering procedures but also obscures the interpretability of the resulting group structures. The ability to identify a parsimonious subset of variables that retains the essential information for clustering is therefore a crucial step toward producing reliable, interpretable, and computationally efficient results.
 	
-	The methodology to be employed in this study, offers an elegant and statistically principled approach to this challenge. By "blinding" non-informative variables using marginal or conditional means, it becomes possible to directly assess their contribution to the clustering process, without relying on arbitrary heuristics or black-box transformations. The conditional mean extension further addresses the pervasive issue of multicollinearity, allowing the procedure to disentangle redundancy from genuine variable importance. The integration of a forward–backward search algorithm ensures that these methods remain feasible and effective even in large-scale applications where exhaustive search would be computationally prohibitive.
+	The methodology to be employed in this study offers an elegant and statistically grounded approach to this challenge. By "blinding" non-informative variables using marginal or conditional means, it becomes possible to directly assess their contribution to the clustering process, without relying on arbitrary heuristics or black-box transformations. The conditional mean extension further addresses the pervasive issue of multicollinearity, allowing the procedure to disentangle redundancy from genuine variable importance. The integration of a forward–backward search algorithm ensures that these methods remain feasible and effective even in large-scale applications where exhaustive search would be computationally prohibitive.
 	
 	The significance of this research extends beyond methodological innovation. From a practical standpoint, effective variable selection enhances the interpretability of cluster solutions, enabling domain experts to link clusters to meaningful real-world constructs. In applied settings such as healthcare diagnostics, market segmentation, and educational assessment, this interpretability can inform targeted interventions, policy decisions, and strategic planning. Furthermore, by reducing dimensionality without sacrificing essential information, the proposed approach lowers computational costs, making sophisticated clustering analyses more accessible to practitioners with limited computational resources.
 	
@@ -335,7 +332,7 @@
 	\label{ch:scope}
 	This study focuses on the development, adaptation, and evaluation of statistical procedures for variable selection in cluster analysis. Specifically, the research will examine two complementary approaches: the marginal mean "blinding" method, designed to detect and remove non-informative noisy variables, and the conditional mean method, aimed at addressing multicollinearity and redundancy. These methods will be integrated with a forward–backward search algorithm to ensure computational feasibility in high-dimensional contexts. The primary application domain will be on high-dimensional datasets like DHS data obtained from the National Institute of Statistics in Cameroon. This will enable the demonstration of the methods’ generality and robustness.
 
-	Performance will be evaluated in terms of classification agreement with the full-variable clustering, reduction in dimensionality, computational cost, and interpretability of the resulting variable subsets.
+	Simulated data may be used in this study. Performance will be evaluated in terms of classification agreement with the full-variable clustering, reduction in dimensionality, computational cost, and interpretability of the resulting variable subsets.
 	
 	However, several limitations should be acknowledged. First, the methods under consideration depend on the initial clustering obtained from the full set of variables. If the initial clustering is poor due to inappropriate choice of clustering algorithm, distance measure, or number of clusters, the variable selection process may propagate these deficiencies. Second, while the conditional mean method addresses multicollinearity, it requires reliable estimation of conditional expectations, which in turn demands sufficiently large sample sizes; performance may deteriorate when the sample size is small relative to the number of variables. Third, the forward–backward search algorithm, though more efficient than exhaustive search, may still be computationally intensive for extremely high-dimensional data, particularly when coupled with nonparametric conditional estimation. Finally, the evaluation of variable importance in clustering inherently lacks a ground truth in unsupervised settings, meaning that conclusions must often be drawn from indirect measures such as agreement indices or stability analyses.
 	
@@ -345,54 +342,196 @@
 	%-----------------CHAPTER: LITERATURE REVIEW--------------------------
 	\chapter{Literature Review}
 	\label{ch:lit}
+	 
+	 \section{Variable Selection Approaches}
+	 Cluster analysis (unsupervised classification) seeks to partition data into homogeneous groups.  Classical clustering methods include hierarchical clustering \citep{hartigan1975}, $k$-means \citep{macqueen1967}, and model-based methods \citep{kaufman1987}, among others. 
+	 Variable selection in clustering has long been recognized as important for improving interpretability and avoiding overfitting. Even when the number of variables is moderate, retaining only a subset can yield better cluster recovery (Fowlkes {\it et al}., 1988). In model-based clustering – where data are assumed to arise from a finite mixture of distributions – extraneous “noise” features can severely degrade estimates of the number of clusters and the parameter estimates. Fop and Murphy (2018) provide a comprehensive review of variable selection in this context, emphasizing that redundant or irrelevant variables increase model complexity and over-parameterization. Our goal is to survey the evolution of methods for variable selection in model-based clustering of multivariate continuous and categorical data, from early contributions to modern high-dimensional approaches.
+	 
 	
-	Variable selection is a critical step in modern cluster analysis, particularly as datasets grow in dimensionality and complexity. The inclusion of irrelevant or redundant variables can obscure the true underlying structure of the data, leading to suboptimal clustering results \citep{steinley2008selection}. This chapter provides a review of the literature on variable selection for cluster analysis, with a focus on methods for high-dimensional data, mixed data, and survey data.
-	
-	\section{Variable Selection Approaches}
-	Variable selection methods for clustering can be broadly categorized into three groups: filter, wrapper, and embedded methods \citep{guyon2003}.
-	
-	\begin{itemize}
-		\item \textbf{Filter methods} are preprocessing techniques that select variables independently of the clustering algorithm. They typically rank variables based on some criterion, such as variance or mutual information with other variables, and then a subset of variables is selected. Filter methods are computationally efficient but may not select the most relevant variables for a specific clustering algorithm.
-		
-		\item \textbf{Wrapper methods} use the performance of a specific clustering algorithm to evaluate the usefulness of a subset of variables. They search for the subset of variables that optimizes the performance of the clustering algorithm, which is often measured by a cluster validity index. Wrapper methods are generally more accurate than filter methods but are also more computationally expensive.
-		
-		\item \textbf{Embedded methods} perform variable selection as part of the clustering algorithm itself. They typically include a penalty term in the objective function of the clustering algorithm that encourages sparsity, i.e., the selection of a small number of variables. Embedded methods are often a good compromise between accuracy and computational efficiency.
-	\end{itemize}
-	
-	\section{Variable Selection for High-Dimensional Data}
-	High-dimensional data, where the number of variables $p$ is much larger than the number of observations $n$, pose significant challenges for cluster analysis. The "curse of dimensionality" can lead to a deterioration in the performance of clustering algorithms and make it difficult to identify the true cluster structure.
-	
-	Sparse clustering methods are a class of embedded methods that have been developed to address the challenges of high-dimensional data. These methods simultaneously perform clustering and variable selection by introducing a penalty term that encourages sparsity in the cluster centroids or weights. For example, \citet{witten2010framework} proposed a sparse $k$-means algorithm that adds an L1 penalty to the k-means objective function, which forces some of the feature weights to be exactly zero. A systematic survey of sparse clustering methods is provided by \citet{alani2025systematic}.
-	
-	\section{Variable Selection for Mixed Data}
-	Mixed data, which contain both continuous and categorical variables, are common in many fields. The presence of different data types makes it challenging to define a suitable distance or similarity measure for clustering.
-	
-	Model-based clustering methods, which assume that the data are generated from a finite mixture of distributions, are a natural choice for clustering mixed data. \citet{marbac2015variable} proposed a variable selection method for model-based clustering of mixed data. Their method uses a forward-backward search to find the subset of variables that maximizes the Bayesian Information Criterion (BIC).
-	
-	\section{Variable Selection for Survey Data}
-	Survey data are often collected using complex sampling designs that involve stratification, clustering, and unequal probabilities of selection. These design features must be taken into account when performing cluster analysis to obtain valid results.
-	
-	\citet{doi:10.1080/02664763.2022.2039025} proposed a variable selection method for clustering survey data that incorporates sampling weights into the clustering process. Their method is based on the Fraiman et al. (2008) methodology and uses a weighted version of the silhouette coefficient to evaluate the quality of the clustering.
-	
-	\section{The Fraiman et al. (2008) Methodology}
-	\citet{fraiman2008} introduced two novel wrapper methods for variable selection in clustering and classification. The key idea is to "blind" variables by replacing their values with uninformative estimates and then measure how well the original partition is preserved.
-	
-	The two procedures differ in how the variables outside the selected subset are blinded. In the \emph{marginal-mean} approach, each unused feature is set to its marginal mean. This detects "noisy" noninformative variables. In the \emph{conditional-mean} approach, variables are replaced by their conditional expectation given the selected variables. This way, the blinded variables reflect only the signal explained by the chosen subset, effectively removing redundant variation.
-	
-	The objective function to be maximized is the proportion of observations that are assigned to the same cluster before and after blinding. The authors provide strong consistency results and propose a forward-backward search algorithm to make the procedure computationally feasible for high-dimensional data.
-	
-	\section{Gaps in the Literature}
-	Despite the significant progress that has been made in variable selection for cluster analysis, several gaps remain in the literature.
-	
-	\begin{itemize}
-		\item There is a need for more research on variable selection methods for complex data types, such as mixed data and survey data.
-		\item Most existing methods assume that the number of clusters is known in advance, which is often not the case in practice.
-		\item The development of computationally efficient and scalable variable selection methods for high-dimensional data is still an active area of research.
-	\end{itemize}
-	
-	This thesis aims to address some of these gaps by developing a variable selection procedure for clustering high-dimensional survey data with mixed data types. The proposed procedure will be based on the Fraiman et al. (2008) methodology and will be extended to handle the complexities of survey data.
+	 
+	 \section{Introduction} Variable selection in clustering has long been recognized as important for improving interpretability and avoiding overfitting. Even when the number of variables is moderate, retaining only a subset can yield better cluster recovery (Fowlkes {\it et al}., 1988[1]). In model-based clustering – where data are assumed to arise from a finite mixture of distributions – extraneous “noise” features can severely degrade estimates of the number of clusters and the parameter estimates. Fop and Murphy (2018) provide a comprehensive review of variable selection in this context, emphasizing that redundant or irrelevant variables increase model complexity and over-parameterization[2][3]. Our goal is to survey the evolution of methods for variable selection in model-based clustering of multivariate continuous and categorical data, from early contributions to modern high-dimensional approaches.
+	 \section{Model-Based Clustering Frameworks} Model-based clustering typically assumes each observation $x_i$ arises from one of $G$ groups, with group memberships indicated by a latent variable $z_i\in{1,\dots,G}$. For multivariate {\it continuous} data, a common choice is the Gaussian mixture model (GMM): $$p(x_i;\Theta)=\sum_{g=1}^G\tau_g\;\phi(x_i;\mu_g,\Sigma_g),$$ where $\phi(\cdot;\mu,\Sigma)$ is a multivariate normal density and $\tau_g$ are mixing proportions. Parameter estimation is usually by the EM algorithm. For {\it categorical} data, latent class analysis (LCA) assumes a mixture of discrete distributions (often conditional independence within classes). In both settings, the number of clusters $G$ and the covariance/association structure (e.g.\ diagonal vs full covariance) can be selected by information criteria like BIC (Schwarz, 1978). However, when many variables are available, one must decide which subset actually contains group-discriminating information. Variables may be {\it relevant} for clustering (their distributions differ across groups), {\it redundant} (correlated with relevant ones but not directly informative of group membership), or {\it irrelevant/noise} (independent of the grouping)[2][4]. This notion was formalized by Raftery and Dean (2006), who partition variables into these roles and select subsets by comparing competing mixture models[5][4]. Similarly, for LCA one often assumes a {\it local independence} condition (within-class independence of relevant variables) and selects indicators that drive the latent classes (Dean and Raftery, 2010). In practice, clustering of modern data (e.g.\ large demographic surveys) requires methods that scale to many variables and yield interpretable feature sets.
+	 \section{Wrapper/Stepwise Variable Selection} A major class of methods treats variable selection as a model-selection problem within a mixture-model framework. Raftery and Dean’s (2006) pioneering “wrapper” approach compares two mixture models at each step to assess a candidate variable’s usefulness[5][4]. Concretely, suppose $X_C$ is the current set of clustering variables and $X^P$ is a new candidate. Model $M_A$ treats $X_C$ and $X^P$ jointly as informative, while model $M_B$ assumes $X^P$ is independent of the cluster label given $X_C$ (so $X^P$ adds no new group information)[4]. These are Gaussian mixtures for continuous data, with $M_B$ further including a regression term $p(X^P\mid X_C)$ for the candidate variable if it is not a clustering variable. One computes BIC for each model: $$\text{BIC}A=\text{BIC}(X_C,X^P),\quad \text{BIC}B=\text{BIC}(X^P\mid X_C).$$ If $\text{BIC}_A-\text{BIC}_B>0$, $X^P$ is deemed to improve clustering and is added[6]. The algorithm proceeds via a greedy stepwise (forward-backward) search over variables. In practice one might start with no variables and add (forward), or start with all and remove (backward), or alternate. Scrucca and Raftery (2014) implemented this in the {\tt clustvarsel} R package with both “greedy” and “headlong” search options to speed up computation on larger feature sets[7][8]. 
+%	 }(X_C)+\text{BIC}_{\rm reg
+	 Dean {\it et al}. (2010) adapted this idea to LCA for categorical data. In that setting, a candidate categorical indicator $Y$ is compared in two models: in one model $Y$ is conditionally independent of the latent class given already-chosen indicators (irrelevant), while in the other model $Y$ depends on the class (relevant). Dean and Raftery use a “headlong” search strategy (rapid forward inclusion/removal) guided by likelihood/BIC comparisons[9]. Empirical studies showed this method correctly identifies clustering variables and yields more parsimonious latent class models (e.g.\ the International HapMap example in Dean {\it et al}. 2010). However, this conditional-independence assumption in the null model means that truly redundant variables (correlated with $X_C$ but not directly with class) cannot be discarded by the original algorithm[10]. Subsequent work (Maugis {\it et al}., 2009; Fop {\it et al}., 2017) addressed this by allowing a candidate to depend on a subset of $X_C$ even when not a primary class predictor.
+	 \section{Penalized Likelihood and Sparse Methods} An alternative “embedded” strategy is to impose a sparsity penalty on the mixture model parameters so that irrelevant variables drop out naturally. Pan and Shen (2007) introduced this in GMM clustering by adding an $L_1$ penalty on component means: $$\lambda\sum_{g=1}^G\sum_{j=1}^J|\mu_{gj}|.$$ After centering, if all $\mu_{gj}=0$ for a variable $j$, that variable’s mean is equal across components and contributes nothing to cluster separation[11]. This yields a sparse solution (some component means are exactly zero) and variable $j$ is effectively removed. A similar idea was used by Bhattacharya and McNicholas (2014) with a cluster-weighted penalty to balance cluster sizes in high dimensions. Witten and Tibshirani (2010) proposed a related sparse clustering method for K-means (not model-based) via a penalized matrix decomposition; this achieves feature selection by L1 constraints and was implemented in the {\tt sparcl} R package. In all penalized approaches, a tuning parameter (e.g.\ $\lambda$) governs the sparsity level. Cross-validation or modified BIC criteria are typically used to select it. Penalized methods naturally scale better to high-dimensional data than exhaustive wrappers, but they require careful calibration and generally treat variables independently, which can miss grouping structure or produce biased estimates.
+	 \section{Bayesian Variable Selection} Bayesian frameworks treat feature selection by introducing latent indicators or priors on parameters. For instance, Kim {\it et al} (2006) used a Dirichlet process mixture for Gaussian clustering, adding a binary latent variable per feature to indicate whether it is “active” for clustering. Posterior inference (e.g.\ via Gibbs sampling) jointly estimates the number of clusters and the subset of relevant features[12]. The Dirichlet process allows the model to have an effectively infinite mixture with data-driven number of components. Storlie {\it et al}. (2018) similarly developed a hierarchical Bayesian model for mixed continuous/discrete data: discrete variables are mapped to latent normals, and both clustering and variable inclusion are inferred via a Dirichlet process mixture. Applied to autism screening data (many cognitive test scores), this yielded a 3-cluster solution with only 4 of 55 tests deemed informative[13]. More recent work combines Bayesian mixtures with variational inference for scalability. Dang {\it et al}. (2022) introduced a stochastic variational algorithm for Dirichlet-multinomial mixtures in microbiome clustering. They include an indicator for “core” taxa and use stochastic optimization to handle datasets with tens of thousands of features. SVVS (stochastic variational variable selection) can cluster over 50,000 dimensions and identify a small core set, greatly reducing computation and improving interpretability[14][15]. In general, Bayesian methods offer a principled way to quantify uncertainty in both clustering and feature inclusion, but they can be computationally intensive (often requiring MCMC or complex variational algorithms) and sensitive to prior choices.
+	 \section{Information-Criterion and Model-Selection Approaches} Another line of work uses model-selection criteria directly. Raftery and Dean’s method is essentially a BIC-based wrapper, but more sophisticated criteria have been proposed. Marbac and Sedki (2016) formulated a penalized mixture model with an “integrated complete-data likelihood” (ICL) criterion. They note that standard BIC penalizes the number of parameters, requiring multiple EM fits; instead, their integrated criterion (called MICL) can be optimized without full likelihood estimation[16]. In practice, MICL reduces to comparing ICL scores of mixtures with different feature subsets. Marbac {\it et al}. (2018) extended this in the VarSelLCM R package to handle mixed data (continuous, integer, categorical with missing) under a conditional-independence mixture model[17]. These ICL-based methods can be faster than repeated EM and can select the number of clusters jointly with variables, but they rely on approximations whose accuracy in very high dimensions is less understood. In the latent class setting, Dean and Raftery (2010) use a headlong BIC difference test (as noted above)[9], while Fop {\it et al}. (2017) proposed a swap-stepwise search optimizing ICL to avoid local optima issues.
+	 \section{Mixed and Heterogeneous Data} Many real-world datasets contain mixtures of continuous and categorical variables. Model-based clustering of such data often uses a product of distributions (e.g.\ Gaussian for continuous, multinomial for categorical) with a shared latent class. Variable selection here must decide which features of each type are relevant. Marbac and Sedki’s VarSelLCM implements exactly this: it assumes conditional independence given cluster and applies MICL-based selection to all variables jointly[18]. Storlie {\it et al}. (2018) took a Bayesian approach: treating discrete variables via latent normals and using a Dirichlet process mixture on the concatenated latent space[13]. In practice, mixed-data methods are relatively rare, but they are essential for surveys like DHS (which include demographics, binary indicators, counts, etc.). They benefit from conditional-independence assumptions that simplify likelihoods, but if variables are highly correlated this assumption can be violated, possibly missing complex patterns.
+	 
+	 \section{Empirical Review}
+	 The variable selection problem in cluster analysis is not
+	 a new topic and has been extensively studied since the
+	 1980s. For example, Steinley and Brusco (2008b) have
+	 compared the performance of eight different procedures to
+	 address this problem. These approaches – most notably the
+	 Variable Selection in K-Means (i.e., VS-KM; Brusco \&
+	 Cradit 2001), model-based variable selection (Raftery \&
+	 Dean, 2006), the Clustering Objects on Subsets of Attributes
+	 (i.e., COSA; Friedman \& Meulman 2004) and the relative
+	 clusterability weighting method (Steinley \& Brusco, 2008a)
+	 – are well designed and have been extensively validated.
+	 However, these methods are computationally prohibitive
+	 in the presence of many variables, as the computational
+	 demand grows exponentially with the number of variables.
+	 For example, Steinley and Brusco (2008a) proposed to test
+	 all subsets of variables that pass the initial screening, where
+	 the theoretical maximum number of tests can be as high as
+	 2J - 1 (with J indicating the number of variables in the
+	 data set). Raftery and Dean (2006) and Brusco and Cradit
+	 (2001) have both proposed a forward-searching strategy that
+	 starts with an initial pair of two signaling variables and,
+	 after searching all remaining variables, adds other signaling
+	 variables one by one. This strategy, too, becomes very
+	 inefficient when there are more than 100 variables.
+	 Other methods are available, however, that are able to
+	 simultaneously perform variable selection and clustering, with
+	 reasonable computational time for large data sets with many
+	 variables. They are, for example, Sparse k-means (SKM;
+	 Witten  Tibshirani 2010) and Sparse Alternate Sum (SAS;
+	 Arias-Castro  Pu 2017). Importantly, these methods have
+	 been verified in several simulation studies to entail a
+	 better performance than competing approaches, such as the
+	 aforementioned COSA (Witten  Tibshirani, 2010).
 	 
 	 
+	 The goal of clustering is to organize data into a small number
+	 of homogeneous groups, thus aiding interpretation. Clustering
+	 techniques have been employed in a wide range of scientific
+	 fields, including biology, physics, chemistry, and psychology.
+	 These techniques can broadly be classified into two categories:
+	 hierarchical methods and partition methods (see Kaufman
+	 and Rousseeuw, 1990; Gordon, 2008, and references therein).
+	 The former typically start from a dissimilarity matrix that
+	 captures differences between the objects to be clustered and
+	 produce a family of cluster solutions, whose main property is
+	 that any two clusters in the family are either disjoint or one is
+	 a superset of the other. Various popular agglomerative algorithms, such as single, complete, and average linkage belong to
+	 this class. Partition algorithms produce nonoverlapping clusters, whose defining characteristic is that distances between
+	 objects belonging to the same cluster are in some sense smaller
+	 than distances between objects in different clusters. The popular K-means algorithm (MacQueen, 1967) and its variants
+	 are members of this class. A statistically motivated partition
+	 method is model-based clustering, which models the data as a
+	 sample from a Gaussian mixture distribution, with each component corresponding to a cluster (McLachlan and Basford,
+	 1988). A number of extensions addressing various aspects of
+	 this approach have recently appeared in the literature. For example, Banfield and Raftery (1993) generalized model-based
+	 clustering to the non-Gaussian case, whereas Fraley (1993)
+	 extended it to incorporate hierarchical clustering techniques.
+	 The issue of variable selection in clustering, also known
+	 as subspace clustering, has started receiving increased attention in the literature recently (for a review of some early
+	 algorithms see Parsons, Haque, and Liu, 2004). For example, Friedman and Meulman (2004) proposed a hierarchical
+	 clustering method that uncovers cluster structure on separate
+	 subsets of variables; Tadesse, Sha, and Vannucci (2005) formulated the clustering problem in Bayesian terms and developed an MCMC sampler that searches for models comprised
+	 of different clusters and subsets of variables; Hoff (2006) also
+	 employed a Bayesian formulation based on a Polya urn model;
+	 and Raftery and Dean (2006) introduced a method to sequentially compare two nested models to determine whether
+	 a subset of variables should be included or excluded from the
+	 current model. Some recent approaches addressing variable
+	 selection are based on a regularization framework. Specifically, Pan and Shen (2006) proposed to maximize the Gaussian mixture likelihood while imposing an l1 penalty on the
+	 cluster means. In addition, the means of all clusters were required to sum up to zero for each variable. This method removes variables for which all cluster means are shrunk to zero
+	 and hence regarded as uninformative. Wang and Zhu (2007)
+	 treated the cluster mean parameters associated with the same
+	 variable as a natural “group” and proposed an adaptive l$\infty$
+	 penalty and an adaptive hierarchical penalty to make use of
+	 the available group information. Finally, Jornsten and Keles
+	 (2008) introduced mixture models that lead to sparse cluster
+	 representations in complex multifactor experiments.
+	 
+	 II. LITERATURE REVIEW
+	 1. Manish Verma, Mauly Srivastava, Neha …” A 
+	 Comparative Study of Various Clustering Algorithms 
+	 in Data Mining” [5]
+	 The author made a comparison between different 
+	 clustering techniques. The aim was to measure the
+	 algorithm which gives the best performance. It was 
+	 observed that K-means is faster than all the algorithms 
+	 that are mentioned in this paper. K-means and EM 
+	 gives the best results than hierarchical clustering when 
+	 working on huge data set. 
+	 2. U. Kaymak and M. Setnes, “Extended fuzzy 
+	 clustering algorithms” [6]
+	 The author uses fuzzy clustering algorithm to 
+	 divide dataset into clusters. Some of the issues using 
+	 fussy algorithm were discussed by the author such as 
+	 number and shape of clusters, division of data patterns, 
+	 choosing the number of clusters in the data. Enhanced 
+	 version of fussy means were given and their properties 
+	 were illustrated. Examples were used to show that the 
+	 enhanced algorithms does not require any additional 
+	 input from the user and can determine partition of data 
+	 on its own. 
+	 3. Karthikeyan B., Dipu Jo George, G. Manikandan, 
+	 Tony Thomas “A comparative study on k-means 
+	 clustering and agglomerative hierarchical clustering,” 
+	 [7]
+	 The authors have done a comparative study to 
+	 determine the best-suited algorithm among K-Means 
+	 and Agglomerative Hierarchical Clustering. It was 
+	 concluded that k-means can be best used for larger 
+	 datasets with minimal runtime and memory change 
+	 rate. It is also concluded that the agglomeration 
+	 hierarchical clustering technique is best suited for 
+	 smaller data sets because of the minimum overall 
+	 memory consumption.
+%	 4. S. H. Sastry, P. Babu and M. S. Prasada, “Analysis  Prediction of Sales Data in SA P-ERP System”
+	 using Clustering Algorithms”, [8]
+	 The authors of this paper used grouping 
+	 procedures for recognizing contrast in item deals and 
+	 furthermore to recognize and think about deals 
+	 throughout a specific time. The interest for steel items 
+	 is repeating furthermore, relies upon numerous 
+	 variables like client profile, value, limits and expense 
+	 issues. Creators have investigated deals information 
+	 with bunching calculations like K-Means and EM 
+	 (assumption augmentation) that uncovered many 
+	 fascinating examples helpful for improving deals 
+	 income and accomplishing higher deals volumes. K-Means and EM (segment Procedures) calculations are 
+	 more qualified to assess deals information in
+	 correlation with thickness based Procedures.
+	 5. Soumi Ghosh, S. K. Dubey, “Comparative Analysis 
+	 of K-Means…..” [9]
+	 The paper includes comparison of two clustering 
+	 techniques, centroid-based K-Means and representative 
+	 object-based Fuzzy C-Means clustering techniques. 
+	 This analysis is based on a performance evaluation with
+	 these algorithms about how efficient outputs are 
+	 generated. The results of this comparative research 
+	 depicts that efficiency of FCM is somewhat closer to 
+	 K-means. However, computation time is still longer 
+	 than K-means since the fuzzy measure calculations are 
+	 involved.
+	 6. M.Venkat Reddy, M. Vivekananda, RUVN Satish. 
+	 [10]
+	 The researchers have discovered an efficient 
+	 clustering technique by comparing Divisive and 
+	 Agglomerative Hierarchical Clustering with K-means. 
+	 The outcome of paper was that Agglomerative 
+	 clustering along with k-means is the practical choice to 
+	 achieve a high degree of accuracy. Divisive clustering 
+	 with k-means also functions efficiently where each 
+	 cluster is fixed i.e. where the initial centroids are taken 
+	 in a fixed number for each cluster rather than by 
+	 random selection.
+	 7.. N. Sharma .“Comparison the various clustering 
+	 algorithms of weka tools”.[11] 
+	 The authors have compared and contrasted
+	 different clustering algorithms. Weka Tool is used to 
+	 implement all of the proposed algorithms. The purpose 
+	 of their research is to determine which algorithm is 
+	 more appropriate and efficient. DBSCAN, EM, 
+	 Farthest First, OPTICS, and the K-Means algorithms 
+	 are among these algorithms. They show the benefits 
+	 and drawbacks of each algorithm in this study. 
+	 They have demonstrated the benefits and drawbacks of 
+	 each method in this paper, however based on their 
+	 study, they discovered that the k-means clustering 
+	 algorithm is the simplest of the algorithms and fastest 
+	 algorithm to be used with large datasets.
+	 
+	 \section{Recent Trends and High-Dimensional Considerations} With modern “big” datasets (large $J$), scalability and interpretability become critical. Filter methods (ranking variables by marginal criteria) are less common in clustering because there is no obvious target to supervise the ranking; most efforts focus on wrapper or embedded methods. High-dimensional problems (e.g.\ genomics or image data) often use penalization or Bayesian sparsity (as above) to handle $J\gg n$. Subspace or factor-analytic mixture models (Bouveyron and Brunet-Saumard, 2014) reduce dimensionality without explicit selection, but variable selection gives direct interpretability. Parallel and stochastic algorithms are increasingly used: for example, the clustvarsel stepwise search can run inclusion/exclusion tests in parallel, and the headlong variant avoids exhaustive scans[8]. Variational Bayes (Dang {\it et al}., 2022) and stochastic EM (not reviewed here) offer further speed-ups. Across methods, the recent focus has been on {\it sparse} clustering (few variables) and {\it interpretable} models. For instance, Witten and Tibshirani’s sparse clustering yields easily interpretable feature weights, and the R Shiny interface of VarSelLCM helps users explore selected subsets.
+	 \section{Discussion of Methods} Each approach has trade-offs. Wrapper/stepwise methods (e.g.\ Raftery and Dean’s, Dean {\it et al}.’s) are conceptually simple and directly tied to likelihood criteria, but they can be computationally heavy and sensitive to greedy search paths. They assume either full conditional independence (Dean et al. 2010) or model $p(X^P|X_C)$ for candidate variables, which can miss subtle dependencies[10]. Stepwise procedures also inherit instabilities of stepwise regression (different paths may yield different subsets)[19]. Penalized likelihood methods (Lasso-type) scale better to large $J$ and automatically shrink out weak variables, but require choosing tuning parameters and may bias parameter estimates. They typically assume independent penalties on variables, potentially ignoring group structure (though extensions with group Lasso exist[20]). Bayesian methods incorporate uncertainty and can handle very complex models (e.g.\ infinite mixtures), but MCMC sampling can be slow and does not parallelize easily[21][10]. Variational approximations (e.g.\ SVVS) mitigate this at some cost in accuracy. Filter methods (based on marginal statistics) are fastest but risk discarding variables that only show signal jointly. Finally, model-selection criteria like BIC/ICL unify selection with clustering but depend on asymptotic approximations and often require a search over subsets.
+	 In terms of interpretability, methods that return a small feature subset (sparse clustering, wrapper selection) are generally preferred. Penalized and Bayesian methods can also yield sparsity but may produce fractional importance weights. Robustness to noise and multicollinearity varies: penalized methods tend to handle multicollinearity by shrinking or fusing coefficients (Bhattacharya and McNicholas’s penalty incorporates cluster weights[20]), while wrapper methods can explicitly recognize redundant variables if modeled (Maugis {\it et al}., 2009). Empirical comparisons (Fop and Murphy, 2018) suggest no one-size-fits-all solution; choice depends on data size, dimensionality, and the computational budget.
+	 \section{Conclusions} Variable selection in model-based clustering has matured into a rich field with methods from different traditions. Foundational work by Raftery and Dean (2006) and Dean {\it et al}. (2010) demonstrated the utility of wrapper-BIC methods for continuous and categorical data, respectively[5][9]. Since then, penalized likelihood and Bayesian approaches have been developed to tackle high-dimensional settings[11][12]. Recent advances (e.g.\ variational algorithms) are making these methods feasible for truly large datasets (e.g.\ microbiome or survey data) and yielding sparse, interpretable cluster descriptions[14][22]. This review has categorized these methods by strategy (wrapper vs embedded vs Bayesian) and data type (continuous vs categorical vs mixed), and highlighted their strengths and limitations in terms of interpretability, scalability, and noise robustness. Continued research, especially on scalable algorithms and mixed-data extensions, will further enhance the applicability of variable selection in modern model-based clustering.
 	 
 
 	
@@ -411,8 +550,8 @@
 	\[
 	z_{ig} =
 	\begin{cases}
-		1 & \text{if observation } x_{i} = (x_{i1}, . . . , x_{ip}) \text{ belongs to cluster } g, \\
-		0 & \text{otherwise}.
+		1  \text{if observation } x_{i} = (x_{i1}, . . . , x_{ip}) \text{ belongs to cluster } g, \\
+		0  \text{otherwise}.
 	\end{cases}
 	\]
 	The leftover variance within variable $j$ not accounted for by $W_j$, or $\sigma^2_j - W_j$ in the common notation, is then the leftover variance within groups. 
