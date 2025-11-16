@@ -20,7 +20,7 @@
 \usepackage{graphicx}
 \graphicspath{{images/}} % place logo.png inside ./images/
 \usepackage{float}
-\newcommand{\universitylogo}{images/logo.png}
+\newcommand{\universitylogo}{\includegraphics[scale=0.5]{logo}}
 
 % ------------------ Math ------------------
 \usepackage{amsmath,amssymb,amsthm}
@@ -28,6 +28,7 @@
 
 % ------------------ Tables & figures ------------------
 \usepackage{booktabs}
+\usepackage{longtable}
 \usepackage{caption}
 \usepackage{subcaption}
 
@@ -82,7 +83,7 @@
 						\end{minipage}
 						&
 						\begin{minipage}{.15\textwidth}
-							\hspace*{-0.35cm}\includegraphics[scale=0.5]{logo}
+							\hspace*{-0.35cm}\universitylogo
 						\end{minipage}
 						&
 						\begin{minipage}{7cm}
@@ -130,7 +131,7 @@
 		\end{center} 
 		\vfill
 		\begin{center}
-			\textbf{February, 2025}
+			\textbf{November, 2025}
 		\end{center}
 		
 	\end{titlepage}
@@ -143,24 +144,13 @@
 	\null\vfill
 	\begin{center}
 		
-		$\copyright$ Copyright by \textbf{Ayendoh Terrence Sama} 2025
+		$\copyright$ Copyright by \textbf{Ayendoh Terrence Sama}, 2025
 		\\\vspace{0.3cm}
 		All Rights Reserved.
 	\end{center}
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	
-	
-	
-	% ---------- ABSTRACT ----------
-	\begin{abstract}
-		In this thesis we will introduce two procedures for variable selection
-		in cluster analysis and classification rules. One will mainly be oriented to	detect the “noisy” non–informative variables, while the other will deal with multicolinearity. A forward–backward algorithm will be proposed as well to make feasible these procedures in large data sets. A small
-		simulation will be performed and some real data examples are analyzed.\\
-\\
-		\textbf{Keywords:} Cluster Analysis, Selection of variables, Forward-backward
-		algorithm.
-	\end{abstract}
 	
 	
 	\newpage
@@ -172,7 +162,7 @@
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\chapter*{List of Symbols}
 	\addcontentsline{toc}{chapter}{List of Symbols}
-	\begin{tabular}{lp{15cm}}
+	\begin{longtable}{l p{13cm}}
 		$X = (X_1,\dots,X_p)$ & Random vector of $p$ variables \\
 		$p$ & Total number of variables \\
 		$n$ & Sample size (number of observations) \\
@@ -194,29 +184,39 @@
 		$\mathbb{I}\{\cdot\}$ & Indicator function \\
 		$\mathbb{P}(\cdot)$ & Probability measure \\
 		$\mathbb{E}(\cdot)$ & Expectation operator \\
-	\end{tabular}
+	\end{longtable}
 	
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\chapter*{List of Abbreviations }
 	\addcontentsline{toc}{chapter}{List of Symbols}	
-	\begin{tabular}{lp{15cm}}
+	\begin{longtable}{l p{13cm}}
 				
 		A.M.S. & American Mathematical Society \\
-		ANOVA & Analysis of Variance \\
 		BIC & Bayesian Information Criterion \\
-		CART & Classification and Regression Trees \\
-		GKE & General Knowledge Exam \\
-		i.i.d. & Independent and Identically Distributed \\
-		k-NN & $k$-Nearest Neighbors \\
+		$k$-NN & $k$-Nearest Neighbors \\
 		MCMC & Markov Chain Monte Carlo \\
 		NN & Nearest Neighbor(s) \\
 		PCA & Principal Component Analysis \\
-		SEL & Socioeconomic Level \\
 		TSV05 & Simulated data example from Tadesse, Sha, \& Vannucci (2005) \\
-	\end{tabular}
+	\end{longtable}
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	
+	% ---------- ABSTRACT ----------
+	\chapter*{Abstract}
+	\addcontentsline{toc}{chapter}{Abstract}
+	\begin*{abstract}
+	High-dimensional data presents a significant challenge for cluster analysis, as the presence of noisy and redundant variables can obscure the underlying group structure and degrade the quality of results. This proposal introduces a variable selection framework designed to identify a parsimonious and informative subset of features for clustering. The methodology is based on a "blinding" principle, where the importance of a variable is assessed by measuring the distortion to the cluster partition when its influence is neutralized.
+	
+	We develop two complementary strategies: one using marginal means to identify and remove non-informative "noisy" variables, and another using conditional means to address multicollinearity by removing redundant variables. To ensure computational feasibility in large datasets, these procedures are embedded within a forward-backward search algorithm. A key contribution of this work is the adaptation of this framework for complex, mixed-type, and weighted survey data, with a specific application to the Demographic and Health Surveys (DHS) for Cameroon.
+	
+	The proposed methods will be validated through simulation studies and compared against standard techniques like sparse $k$-means and hierarchical clustering. The expected outcome is a statistically robust, scalable, and interpretable variable selection procedure that improves clustering accuracy and provides clearer insights. For reproducibility and broader use, the final methodology will be implemented as an R package.
+	\\
+	\\
+	\textbf{Keywords:} Cluster Analysis, Variable Selection, High-Dimensional Data, Forward-Backward Algorithm, DHS Data.
+\end*{abstract}
 	
 	
 	
@@ -271,7 +271,7 @@
 %	
 %	Dimension reduction techniques (like principal component analysis) will produce linear combinations of the variables which are difficult to interpret unless most of the coefficients of the linear combination are negligent.
 	
-	Traditional clustering methods such as hierarchical clustering, \(k\)-means, and \(k\)-medoids operate under the implicit assumption that all variables contribute equally to the definition of clusters. In reality, certain variables may carry no meaningful discriminatory power, while others may be strongly correlated with more informative ones, introducing multicollinearity. This redundancy can distort the clustering space by overemphasizing specific dimensions and inflating the apparent significance of certain patterns. The challenge, therefore, lies in identifying a subset of variables that adequately explains the cluster structure, while discarding those that add little or no value to the partition.
+	Traditional clustering methods such as hierarchical clustering, $k$-means, and $k$-medoids operate under the implicit assumption that all variables contribute equally to the definition of clusters. In reality, certain variables may carry no meaningful discriminatory power, while others may be strongly correlated with more informative ones, introducing multicollinearity. This redundancy can distort the clustering space by overemphasizing specific dimensions and inflating the apparent significance of certain patterns. The challenge, therefore, lies in identifying a subset of variables that adequately explains the cluster structure, while discarding those that add little or no value to the partition.
 	
 	Dimension reduction techniques like Principal Component Analysis (PCA) have been employed to address high dimensionality, but these approaches create linear combinations of variables that can be difficult to interpret in substantive terms. Variable selection methods, by contrast, aim to retain a subset of the original variables, preserving interpretability while improving clustering performance. 
 	
@@ -303,7 +303,7 @@
 	\chapter{Aim and Objectives of the Study}
 	\label{ch:aim}
 	
-	The problem of variable selection in cluster analysis remains both practically important and methodologically challenging. This research aims to develop a procedure for variable selection for clustering of high-dimensional data like the DHS data, that achieves a balance between computational efficiency and selection accuracy. Then we empirically validate the proposed approach on real-world datasets, like the DHS dataset for Cameroon, demonstrating improvements in interpretability, robustness, and clustering performance when compared with other standard methods like k-means and hierarchical clustering techniques.
+	The problem of variable selection in cluster analysis remains both practically important and methodologically challenging. This research aims to develop a procedure for variable selection for clustering of high-dimensional data like the DHS data, that achieves a balance between computational efficiency and selection accuracy. Then we empirically validate the proposed approach on real-world datasets, like the DHS dataset for Cameroon, demonstrating improvements in interpretability, robustness, and clustering performance when compared with other standard methods like $k$-means and hierarchical clustering techniques.
 	This will contribute to more accurate, interpretable, and computationally feasible clustering solutions in high-dimensional data.
 	
 	\section*{Main Objective}
@@ -312,7 +312,7 @@
 	\begin{enumerate}[label=\textbf{\arabic*:}]
 		\item To review existing variable selection methods for clustering and identify limitations when applied to high dimensional data.
 		\item To develop variable selection strategies suitable for mixed-type, survey-weighted DHS variables.
-		\item To evaluate proposed methods through simulation and application to one or more Cameroon DHS datasets, as well as compare it with standard clustering procedures such as k-means and hierarchical clustering algorithms.		
+		\item To evaluate proposed methods through simulation and application to one or more Cameroon DHS datasets, as well as compare it with standard clustering procedures such as $k$-means and hierarchical clustering algorithms.		
 		\item To develop an implementation of the proposed method as an R package for reproducibility and ease of use.
 	\end{enumerate}
 	
@@ -389,7 +389,7 @@
 	While originally formulated for model-based clustering, the wrapper principle is broadly applicable. Similar strategies have been adapted for partitional algorithms like $k$-means, where the evaluation criterion is often an internal validation index (e.g., average silhouette width) or a measure of cluster stability \citep{steinley2008selection}.
 	
 	\subsection*{Critical Analysis of Wrapper Methods}
-	The main strength of wrapper methods is their potential for high performance. By tailoring the variable subset to the specific biases and assumptions of the chosen clustering algorithm, they are more likely to find a subset that yields a better-quality partition compared to filter methods.
+	The main strength of wrapper methods is their potential for high performance. By customizing the variable subset to the specific biases and assumptions of the chosen clustering algorithm, they are more likely to find a subset that yields a better-quality partition compared to filter methods.
 	
 	However, this approach has significant drawbacks. The most notable is its \textbf{high computational cost}. Because the clustering algorithm must be run for every single subset evaluated, the process can be extremely slow, especially with a large number of variables or a computationally expensive clustering algorithm. Furthermore, there is a considerable \textbf{risk of overfitting}. The method may select a variable subset that performs exceptionally well on the given data and the chosen evaluation criterion but does not generalize well to new data. The search process is also susceptible to getting trapped in \textbf{local optima}, meaning the final selected subset may be highly dependent on the starting point and the search heuristic, with no guarantee of finding the globally optimal subset. Despite these limitations, wrapper methods remain a powerful and conceptually straightforward approach to variable selection in clustering.	
 	
